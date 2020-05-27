@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effects="clr-namespace:UiSampleMigrat.Effects"
+             xmlns:i18n="clr-namespace:UiSampleMigrat.Helpers"
+             xmlns:behavior="clr-namespace:UiSampleMigrat.Behaviors"
+             xmlns:local="clr-namespace:UiSampleMigrat.Controls"
+             BindingContext="{Binding Main ,Source={StaticResource Locator}}"
+             x:Class="UiSampleMigrat.Views.UpdateInfoUser.ActualizarInformacion">
+    <ScrollView BackgroundColor="White">
+        <StackLayout  BindingContext="{Binding UpdateProfile}">
+            <local:ImageEntry
+                    LineColor="Black" IsVisible="False"></local:ImageEntry>
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackLayout Grid.Row="0" Orientation="Vertical"  Margin="0,15,0,0">
+                    <StackLayout>
+                        <ActivityIndicator x:Name="aicImageLoad" IsRunning="{Binding IsBusy,Mode=TwoWay}"
+                                       IsVisible="{Binding IsVisible,Mode=TwoWay}"></ActivityIndicator>
+                        <Frame CornerRadius="100" 
+                       HeightRequest="200"
+                       WidthRequest="200"
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                            <Image x:Name="imgProfile" Source="{Binding Profile.ProfileImage,Mode=TwoWay}"
+                         Aspect="Fill"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" >
+                            </Image>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" x:Name="btnImg" Tapped="BtnImg_Tapped"></TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                </StackLayout>
+
+                <Grid x:Name="gridMaster" Grid.Row="1"  HorizontalOptions="FillAndExpand" Padding="0,0,0,0" Margin="20,20,20,0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Handle_tapped"></TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBlueUser96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="0" Grid.Column="1" Text="{ Binding Nombres }" Placeholder="Nombres" HorizontalOptions="FillAndExpand"></Entry>
+                    <Image Grid.Row="0" Grid.Column="2" Source="tooltip"  BackgroundColor="Transparent" HeightRequest="16" WidthRequest="16" HorizontalOptions="Center"
+                           effects:TooltipEffect.Position="Left"
+                           effects:TooltipEffect.BackgroundColor="Black"
+                           effects:TooltipEffect.Text="{i18n:Translate nameToolTip}"
+                           effects:TooltipEffect.HasTooltip="True"></Image>
+
+                    <Image Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBlueUser96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="1" Grid.Column="1" Text="{ Binding Apellidos }" Placeholder="Apellidos" HorizontalOptions="FillAndExpand"></Entry>
+                    <Image Grid.Row="1" Grid.Column="2" Source="tooltip"  BackgroundColor="Transparent" HeightRequest="16" WidthRequest="16" HorizontalOptions="Center"
+                           effects:TooltipEffect.Position="Left"
+                           effects:TooltipEffect.BackgroundColor="Black"
+                           effects:TooltipEffect.Text="{i18n:Translate givenNameTltip}"
+                           effects:TooltipEffect.HasTooltip="True"></Image>
+
+                    <Image Grid.Row="2" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBluemail96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="2" Grid.Column="1" Text = "{Binding Profile.Email,Mode=TwoWay}"  Placeholder="user@gmail.com" HorizontalOptions="FillAndExpand"></Entry>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="20,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame  Grid.Row="0" Grid.ColumnSpan="2"  Padding="0,0,0,0" HasShadow="False" BackgroundColor="Transparent">
+                        <StackLayout>
+                            <Label HorizontalOptions="Center" TextColor="Gray" FontSize="Large" Text="{i18n:Translate signin}"></Label>
+                            <BoxView HeightRequest="2"  Margin="5,5,5,5" Color="Black"></BoxView>
+                        </StackLayout>
+                    </Frame>
+                       
+
+                    <Image Grid.Row="1" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBluePass96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="1" Grid.Column="1" Text = "{Binding OldPassword,Mode=TwoWay}" IsPassword="True" Placeholder="Antigua Contraseña" HorizontalOptions="FillAndExpand"></Entry>
+                    <BoxView Grid.Row="1" Grid.Column="2" HeightRequest="16" WidthRequest="16" BackgroundColor="Transparent"></BoxView>
+                    
+                    <Image Grid.Row="2" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBluePass96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="2" Grid.Column="1" Text = "{Binding NewPassword,Mode=TwoWay}" IsPassword="True" Placeholder="Nueva Contraseña" HorizontalOptions="FillAndExpand"></Entry>
+                    
+                    <Image Grid.Row="2" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBluePass96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry ClearButtonVisibility="WhileEditing" Grid.Row="2" Grid.Column="1" x:Name="NewPassword" Text = "{Binding NewPassword,Mode=TwoWay}" IsPassword="True" Placeholder="Nueva Contraseña" HorizontalOptions="FillAndExpand"></Entry>
+
+                    <Image Grid.Row="3" Grid.Column="0" BackgroundColor="Transparent" Source="DarkBluePass96.png" HeightRequest="16" WidthRequest="16" HorizontalOptions="Start"></Image>
+                    <Entry  Grid.Row="3" Grid.Column="1" Text = "{Binding RepeatPassword,Mode=TwoWay}" IsPassword="True" Placeholder="Repetir Contraseña" HorizontalOptions="FillAndExpand">
+                        <Entry.Behaviors>
+                            <behavior:ConfirmPasswordBehavior x:Name="ConfirmPasswordBehavior" 
+                                                              CompareToEntry="{Binding Source={x:Reference NewPassword}}"
+                                                              ></behavior:ConfirmPasswordBehavior>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Image Grid.Row="3" Grid.Column="2" Source="tooltip"  BackgroundColor="Transparent" HeightRequest="16" WidthRequest="16" HorizontalOptions="Center"
+                           effects:TooltipEffect.Position="Left"
+                           effects:TooltipEffect.BackgroundColor="Black"
+                           effects:TooltipEffect.Text="{i18n:Translate passwordsshouldmatch}"
+                           effects:TooltipEffect.HasTooltip="True"></Image>
+
+                </Grid>
+            </Grid>
+            <Button VerticalOptions="End" Margin="20,0,20,20" Command="{Binding UpdateCommand}" Style="{StaticResource FollowButton}" Text="Actualizar perfil"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

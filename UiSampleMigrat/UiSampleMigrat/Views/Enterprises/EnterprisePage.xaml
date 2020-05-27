@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UiSampleMigrat.Views.Enterprises.EnterprisePage"
+             xmlns:local ="clr-namespace:UiSampleMigrat.Models"
+             xmlns:localControls ="clr-namespace:UiSampleMigrat.Controls"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:RatingConverter x:Key="RatingConverter"></local:RatingConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid >
+        <!--Filas-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--Columnas-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Frame  Grid.Row="0"  CornerRadius="20" Margin="5,5,5,5" HeightRequest="25">
+            <SearchBar  Placeholder="DevSocket SA" 
+                        TextChanged="SearchBar_TextChanged"
+                        ></SearchBar>
+        </Frame>
+        <ScrollView Grid.Row="1">
+            <ListView x:Name="lstEnterprises"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding RefreshingCommand,Mode=TwoWay}"
+                      RefreshControlColor="Black"
+                      IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+                      ItemsSource="{Binding Empresas,Mode=TwoWay}" 
+                      SelectionMode="Single"
+                      HasUnevenRows="True"
+                      SelectedItem="{Binding SelectedEnterprise,Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame HasShadow="True" Margin="5,7,5,7" Padding="2" CornerRadius="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110"></ColumnDefinition>
+                                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" ></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <!--Rounded image-->
+                                    <Frame CornerRadius="55" 
+                                           HeightRequest="110"
+                                           WidthRequest="110"
+                                           Padding="0"
+                                           HasShadow="True"
+                                           Grid.Column="0"
+                                           IsClippedToBounds="True">
+                                        <Image x:Name="imgProfile"
+                                               WidthRequest="110"
+                                               HeightRequest="110"
+                                               Source="{Binding Logo}" 
+                                               Aspect="AspectFill"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+
+
+                                    <StackLayout Orientation="Vertical"
+                                                 Grid.Column="1"
+                                                 HorizontalOptions="FillAndExpand">
+                                        <Label Margin="3,0,0,0" HorizontalOptions="Start" Text="{Binding Nombre}" FontSize="Medium"></Label>
+
+                                        <Label Margin="3,2,0,2" 
+                                               FontSize="Small"
+                                               HorizontalOptions="Start" 
+                                               HorizontalTextAlignment="Start" 
+                                               VerticalTextAlignment="Center"
+                                               Text="{Binding Descripcion}"></Label>
+
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+                                            <Label HorizontalOptions="Start" Text="{Binding FechaAfiliacion ,StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="Micro"></Label>
+
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                                <Image Source="startJ.png"
+                                                   WidthRequest="16"
+                                                   HeightRequest="16"></Image>
+                                                <Label Text="{Binding Estrellas}" TextColor="{Binding Estrellas,Converter={StaticResource Key=RatingConverter}}"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+        <StackLayout
+            x:Name="stackMessage"
+            IsVisible="{Binding IsVisibleMessage}"
+            BackgroundColor="Black"
+            Grid.Row="2"
+            HeightRequest="24">
+            <Label
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="FillAndExpand"
+                TextColor="White"
+                FontSize="Small" 
+                Text="{ Binding Message}" 
+                IsVisible="True"></Label>
+        </StackLayout>
+    </Grid>
+</ContentPage>

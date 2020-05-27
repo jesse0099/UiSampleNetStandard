@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UiSampleMigrat.Views.Enterprises.InventarioPage"
+             xmlns:local ="clr-namespace:UiSampleMigrat.Models"
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:RatingConverter x:Key="RatingConverter"></local:RatingConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.Column="0" x:Name="grdViewParent">
+                <!--Filas-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--Columnas-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Frame  Grid.Row="0"  CornerRadius="20" Margin="5,5,5,5" HeightRequest="25">
+                    <SearchBar  Placeholder="RAM DDR4"
+                                TextChanged="SearchBar_TextChanged"></SearchBar>
+                </Frame>
+                <ScrollView Grid.Row="1">
+                    <ListView  x:Name="lstEnterprises"
+                      ItemsSource="{Binding GroupedProducts,Mode=TwoWay}" 
+                      SelectionMode="Single"
+                      HasUnevenRows="True"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+                      RefreshCommand="{Binding  RefreshingCommand,Mode=TwoWay}"
+                      SeparatorVisibility="None"
+                      GroupDisplayBinding="{Binding  NombreSucursal}"
+                      GroupShortNameBinding="{Binding  NombreSucursal.nombreSucursal}"
+                      IsGroupingEnabled="True">
+                        <ListView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame HasShadow="True" Margin="5,7,5,7" Padding="8" CornerRadius="12"
+                                        BackgroundColor="#0d0937">
+                                        <StackLayout>
+                                        <Label Text="{Binding NombreSucursal.nombreSucursal}" 
+                                               FontSize="Medium" 
+                                               HorizontalOptions="Start"
+                                               TextColor="White"
+                                               FontAttributes="Bold"></Label>
+                                        <Label Text="{Binding NombreSucursal.direccion}" 
+                                               FontSize="Small"
+                                               HorizontalOptions="Start"
+                                               TextColor="LightGray"></Label>
+                                        </StackLayout>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.GroupHeaderTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame HasShadow="True" Margin="5,7,5,7" Padding="2" CornerRadius="12">
+                                        <Grid x:Name="Item">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="110" ></RowDefinition>
+                                                <RowDefinition Height="Auto" ></RowDefinition>
+                                                <RowDefinition Height="Auto" ></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <!--Rounded image-->
+                                            <Frame CornerRadius="55" 
+                                           Grid.Row="0"
+                                           HeightRequest="110"
+                                           WidthRequest="110"
+                                           Padding="0"
+                                           HasShadow="True"
+                                           Grid.Column="0"
+                                           IsClippedToBounds="True">
+                                            <Image x:Name="imgProfile"
+                                               Source="{Binding Ilustracion}" 
+                                               HeightRequest="110"
+                                               WidthRequest="110"
+                                               Aspect="AspectFit"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                            </Frame>
+                                            <StackLayout Orientation="Vertical"
+                                                 Grid.Column="1"
+                                                 Grid.Row="0"
+                                                 HorizontalOptions="FillAndExpand">
+                                                <Label Margin="3,0,0,0" HorizontalOptions="Start" Text="{Binding NombreProducto}" FontSize="Medium"></Label>
+
+                                                <Label Margin="3,2,0,2" 
+                                               FontSize="Small"
+                                               HorizontalOptions="Start" 
+                                               HorizontalTextAlignment="Start" 
+                                               VerticalTextAlignment="Center"
+                                               Text="{Binding Descripcion}"></Label>
+
+                                                <Grid ColumnSpacing="2" HorizontalOptions="FillAndExpand">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0"  HorizontalOptions="StartAndExpand" Text="{Binding FechaVencimiento ,StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="Micro"></Label>
+                                                    <Label Grid.Column="1" Text="{Binding Existencias,StringFormat='Existencias : {0}'}" ></Label>
+                                                </Grid>
+                                                <!--<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+                                            <Label HorizontalOptions="StartAndExpand" Text="{Binding FechaVencimiento ,StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="Micro"></Label>
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,15">
+                                                <Label Text="Existencias : "></Label>
+                                                <Label Text="{Binding Existencias}" TextColor="Black"></Label>
+                                            </StackLayout>
+                                        </StackLayout>-->
+                                            </StackLayout>
+                                            <Label  Grid.Row="2"   Grid.ColumnSpan="2" HorizontalOptions="Center" Text="{Binding Precio,StringFormat='Precio : {0:N2}'}" TextColor="Black"></Label>
+                                            <Button BindingContext="{Binding Source={x:Reference lstEnterprises},Path=BindingContext}"
+                                                    Command="{Binding AddCommand}"
+                                                    CommandParameter="{Binding Source={x:Reference Item},Path=BindingContext}"
+                                                    Grid.Row="3" 
+                                                    Grid.ColumnSpan="2"
+                                                    Margin="20,0,20,20" 
+                                                    Style="{StaticResource FollowButton}" 
+                                                    Text="Añadir al carrito"/>
+                                        </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </ScrollView>
+                <ImageButton Grid.Row="2"
+                CornerRadius="25"
+                Padding="5,5,5,5"
+                Margin="5,5,5,0"
+                Source="isoCart.png"
+                Aspect="AspectFit"
+                HeightRequest="50"
+                BackgroundColor="#3699de"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                HorizontalOptions="End"></ImageButton>
+
+            </Grid>
+            <StackLayout
+            x:Name="stackMessage"
+            IsVisible="{Binding IsVisibleMessage}"
+            BackgroundColor="Black"
+            Grid.Row="1"
+            Grid.Column="0"
+            HeightRequest="24">
+                <Label
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="FillAndExpand"
+                TextColor="White"
+                FontSize="Small" 
+                Text="{ Binding Message}" 
+                IsVisible="True"></Label>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+  
+</ContentPage>

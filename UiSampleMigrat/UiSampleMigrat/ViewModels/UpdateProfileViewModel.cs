@@ -1,0 +1,359 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using UiSampleMigrat.Models;
+using UiSampleMigrat.Services;
+using Xamarin.Forms;
+using UiSampleMigrat.Helpers;
+using UiSampleMigrat.Api_Models;
+using Android.Widget;
+using Android.Graphics;
+using Android;
+using UiSampleMigrat.ViewModels;
+
+namespace UiSampleMigrat.ViewModels
+{
+    public class UpdateProfileViewModel : NotificationObject 
+    {
+
+        #region Propiedades
+        public byte[] ProfileImageBytes { get; set; }
+
+        private string _repeatPassword;
+
+        public string RepeatPassword
+        {
+            get { return _repeatPassword; }
+            set { _repeatPassword = value;
+                onPropertyChanged();
+            }
+        }
+
+
+        private ICommand _updateCommand;
+
+        public ICommand UpdateCommand
+        {
+            get { return _updateCommand; }
+            set { _updateCommand = value;
+                onPropertyChanged();
+            }
+        }
+
+
+        private string _oldPassword;
+
+        public string OldPassword
+        {
+            get { return _oldPassword; }
+            set { _oldPassword = value;
+                onPropertyChanged();
+            }
+        }
+
+        private string _newPassword;
+
+        public string NewPassword
+        {
+            get { return _newPassword; }
+            set { _newPassword = value;
+                onPropertyChanged();
+            }
+        }
+
+
+
+        private string _nombres;
+
+        public string Nombres
+        {
+            get { return _nombres; }
+            set { _nombres = value;
+                onPropertyChanged();
+            }
+        }
+
+        private string  _apellidos;
+
+        public string  Apellidos
+        {
+            get { return _apellidos; }
+            set { _apellidos = value;
+                onPropertyChanged();
+            }
+        }
+
+
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { _isBusy = value;
+                onPropertyChanged();
+            }
+        }
+
+        private bool _isVisible;
+
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set { _isVisible = value;
+                onPropertyChanged();
+            }
+        }
+
+
+        private ClientProfile _profile;
+
+        public ClientProfile Profile
+        {
+            get { return _profile; }
+            set { _profile = value;
+                onPropertyChanged();
+            }
+        }
+
+
+        #endregion
+
+        #region Constructores
+        public UpdateProfileViewModel() {
+            this.UpdateCommand = new Command(UpdateCommandExecute);
+            this.Profile = new ClientProfile();
+            EmptyStringInitializer();
+            _instance = this;
+        }
+        #endregion
+
+        #region Metodos
+        public async void UpdateCommandExecute() {
+
+            RestServiceConsumer service;
+            SetActivity(true);
+            //Conexion
+            service  = new RestServiceConsumer();
+            var response = await service.CheckConnection();
+            if (!response.IsSuccesFull)
+            {
+                SetActivity(false);
+                //No hay conexion
+                CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                response.Message, iconResource: "error64", textSize: 16);
+                return;
+            }
+            try
+            {
+                //Chequeo de vacios 
+                if (!AllDataChecker()) {
+                    //Faltan datos
+                    SetActivity(false);
+                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                    Languages.AllDataNeeded, iconResource: "error64", textSize: 16);
+                    return;
+                }
+
+                if (!NameChecker(this.Nombres.TrimEnd(' ')) || !NameChecker(this.Apellidos.TrimEnd(' ')))
+                {
+                    SetActivity(false);
+                    //Los nombres o apellidos no han sido bien escritos}
+                    if(!NameChecker(this.Nombres.TrimEnd(' ')))
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        Languages.WronWGNames, iconResource: "error64", textSize: 16);
+                    else
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        Languages.WronWGivenNames, iconResource: "error64", textSize: 16);
+                    return;
+                }
+
+                //Chequeo de password correcto
+                if (Settings.SuccesfullPassword != this.OldPassword)
+                {
+                    SetActivity(false);
+                    //No coinciden las contraseñas
+                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                    Languages.PasswordsDontMatch, iconResource: "error64", textSize: 16);
+                    return;
+                }
+
+                //Chequeo de repeticio de nueva contraseña
+                if (this.NewPassword != this.RepeatPassword)
+                {
+                    SetActivity(false);
+                    //No coinciden las contraseñas
+                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                    Languages.PasswordsShouldMatch, iconResource: "error64", textSize: 16);
+                    return;
+                }
+
+                Stream streamedImage = GetImageSourceStream(this.Profile.ProfileImage);
+                byte[] profileByteArray = null;
+                profileByteArray = StreamToByteArray(streamedImage);
+                this.ProfileImageBytes = profileByteArray;
+                var token = Settings.SerializedToken;
+                var posted = new ApiClientProfile()
+                {
+                    Email = this.Profile.Email,
+                    PP = profileByteArray,
+                    ID = Settings.ClientUID,
+                    PrimerNombre = this.Nombres.Split(' ')[0],
+                    SegundoNombre = this.Nombres.Split(' ')[1],
+                    Apellido = this.Apellidos.Split(' ')[0],
+                    SegundoApellido = this.Apellidos.Split(' ')[1],
+                };
+
+                var posted2 = new ApiClientCredentials()
+                {
+                    IdClient=-1,
+                    IdPersona = posted.ID,
+                    Password = this.NewPassword,
+                    UserName = "NONE"
+                };
+
+                var result = await service.Put<ApiClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, Constantes.CLIENTUPDATEPROFILE, posted, token);
+                var result2 = await service.Put<ApiClientCredentials>(Constantes.BASEURL,Constantes.CLIENTPREFIX,Constantes.CLIENTUPDATECREDENTIALS,posted2,token) ;
+                if (!result.IsSuccesFull || !result2.IsSuccesFull)
+                {
+                    SetActivity(false);
+                    //Error en la peticion
+                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                    Languages.UpdatedProfile, iconResource: "error64", textSize: 16);
+                    return;
+                }
+                SetActivity(false);
+                CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                    Languages.UpdatedProfile,iconResource:"ok96",textSize:16);
+                Settings.SuccesfullPassword = this.NewPassword;
+                UpdateLocalProfileInfo();
+
+            }
+            catch (Exception ex)
+            {
+                CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                Languages.UpdatedProfile, iconResource: "error64", textSize: 16);
+                SetActivity(false);
+                throw ex;
+            }
+            
+        }
+
+        private void UpdateLocalProfileInfo() {
+            //Aqui iria mi realm o mi sqlite.Pero no funciona ninguno ajjajaj
+            ProfileViewModel.GetInstance().MyClient = new ClientProfile() {
+                PrimerNombre = this.Nombres.Split(' ')[0],
+                SegundoNombre = this.Nombres.Split(' ')[1],
+                Apellido = this.Apellidos.Split(' ')[0],
+                SegundoApellido = this.Apellidos.Split(' ')[1],
+                Email = this.Profile.Email,
+                ProfileImage = ImageSource.FromStream(()=> new MemoryStream(this.ProfileImageBytes)),
+            };
+        }
+
+
+        public static void CustomizedToast(Android.Graphics.Color textColor, Android.Graphics.Color backgroundColor, string message,ToastLength length=ToastLength.Long,
+             string iconResource="Elec",float textSize=16,string resourceFolder="drawable") {
+
+             int resourceId = Android.App.Application.Context.Resources.GetIdentifier(iconResource, resourceFolder, Android.App.Application.Context.PackageName);
+            var toast = Toast.MakeText(Android.App.Application.Context, message, length);
+            var v = (Android.Views.ViewGroup)toast.View;
+            if (v.ChildCount > 0 && v.GetChildAt(0) is TextView)
+            {
+                TextView tv = (TextView)v.GetChildAt(0);
+                tv.SetTextColor(textColor);
+                tv.SetCompoundDrawablesRelativeWithIntrinsicBounds(resourceId, 0, 0, 0);
+                tv.SetTextSize(Android.Util.ComplexUnitType.Sp,textSize);
+            }
+            Android.Graphics.Color c = backgroundColor;
+            ColorMatrixColorFilter CM = new ColorMatrixColorFilter(new float[]
+                {
+                        0,0,0,0,c.R,
+                        0,0,0,0,c.G,
+                        0,0,0,0,c.B,
+                        0,0,0,1,0
+                });
+            toast.View.Background.SetColorFilter(CM);
+            toast.Show();
+        }
+
+        private void SetActivity(bool input) {
+
+            Device.BeginInvokeOnMainThread(()=> {
+                this.IsVisible = input;
+                this.IsBusy = input;
+            });
+        }
+
+        private Boolean NameChecker(String text) {
+            String[] inputArray = text.Split(' ');
+            if (inputArray.Length != 2)
+                return false;
+            try {
+                if ((inputArray[0].Equals(string.Empty) || inputArray[0].Equals(null))
+                        || (inputArray[1].Equals(string.Empty) || inputArray[1].Equals(null)))
+                    return false;
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        private bool AllDataChecker() {
+            if (this.OldPassword.Equals(string.Empty) || this.NewPassword.Equals(string.Empty)
+                || this.Profile.Email.Equals(string.Empty) || this.Nombres.Equals(string.Empty) || this.Apellidos.Equals(string.Empty))
+                return false;
+            else
+                return true;
+        }
+
+        public static byte[] StreamToByteArray(Stream input) {
+            byte[] buffer = new byte[16*1024];
+            using (MemoryStream ms = new MemoryStream()) {
+                int read;
+                while ((read = input.Read(buffer,0,buffer.Length))>0) {
+                    ms.Write(buffer,0,read);
+                }
+                return ms.ToArray();
+            }
+        }
+
+        public static  Stream GetImageSourceStream(ImageSource imgSource) {
+            if (imgSource is StreamImageSource) {
+                try {
+                    StreamImageSource strImgSource = (StreamImageSource)imgSource;
+                    System.Threading.CancellationToken cToken = System.Threading.CancellationToken.None;
+                    Task <Stream> returned =  strImgSource.Stream(cToken);
+                    return returned.Result;
+                } catch (Exception ex) {
+                    Debug.WriteLine(ex.Message);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        private void EmptyStringInitializer() {
+            this.OldPassword = string.Empty;
+            this.NewPassword = string.Empty;
+        }
+        #endregion
+
+        #region Singleton
+        public static UpdateProfileViewModel _instance { get; set; }
+        public static UpdateProfileViewModel GetInstance() {
+            if (_instance == null)
+                return new UpdateProfileViewModel();
+            else
+                return _instance;
+        }
+        #endregion
+
+    }
+}
