@@ -177,7 +177,7 @@ namespace UiSampleMigrat.Services
             HttpClient client = new HttpClient();
             try {
 
-                client.DefaultRequestHeaders.Clear();
+
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", string.Format("Bearer {0}", CleanToken(token)));
                 var request = JsonConvert.SerializeObject(model);
@@ -190,7 +190,7 @@ namespace UiSampleMigrat.Services
                     return new Response
                     {
                         IsSuccesFull = false,
-                        Message = answer,
+                        Message = response.StatusCode.ToString(),
                     };
                 }
 

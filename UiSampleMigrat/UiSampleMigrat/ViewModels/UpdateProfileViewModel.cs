@@ -18,6 +18,7 @@ using UiSampleMigrat.ViewModels;
 
 namespace UiSampleMigrat.ViewModels
 {
+    using Realms;
     public class UpdateProfileViewModel : NotificationObject 
     {
 
@@ -197,7 +198,7 @@ namespace UiSampleMigrat.ViewModels
                 profileByteArray = StreamToByteArray(streamedImage);
                 this.ProfileImageBytes = profileByteArray;
                 var token = Settings.SerializedToken;
-                var posted = new ApiClientProfile()
+                var posted = new ApiClientProfileFix()
                 {
                     Email = this.Profile.Email,
                     PP = profileByteArray,
@@ -216,14 +217,18 @@ namespace UiSampleMigrat.ViewModels
                     UserName = "NONE"
                 };
 
-                var result = await service.Put<ApiClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, Constantes.CLIENTUPDATEPROFILE, posted, token);
+                var result = await service.Put<ApiClientProfileFix>(Constantes.BASEURL, Constantes.CLIENTPREFIX, Constantes.CLIENTUPDATEPROFILE, posted, token);
                 var result2 = await service.Put<ApiClientCredentials>(Constantes.BASEURL,Constantes.CLIENTPREFIX,Constantes.CLIENTUPDATECREDENTIALS,posted2,token) ;
                 if (!result.IsSuccesFull || !result2.IsSuccesFull)
                 {
                     SetActivity(false);
                     //Error en la peticion
-                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
-                    Languages.UpdatedProfile, iconResource: "error64", textSize: 16);
+                    if(!result.IsSuccesFull)
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        result.Message, iconResource: "error64", textSize: 16);
+                    else
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        result2.Message, iconResource: "error64", textSize: 16);
                     return;
                 }
                 SetActivity(false);
@@ -236,7 +241,7 @@ namespace UiSampleMigrat.ViewModels
             catch (Exception ex)
             {
                 CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
-                Languages.UpdatedProfile, iconResource: "error64", textSize: 16);
+                ex.Message, iconResource: "error64", textSize: 16);
                 SetActivity(false);
                 throw ex;
             }
@@ -245,6 +250,7 @@ namespace UiSampleMigrat.ViewModels
 
         private void UpdateLocalProfileInfo() {
             //Aqui iria mi realm o mi sqlite.Pero no funciona ninguno ajjajaj
+
             ProfileViewModel.GetInstance().MyClient = new ClientProfile() {
                 PrimerNombre = this.Nombres.Split(' ')[0],
                 SegundoNombre = this.Nombres.Split(' ')[1],
@@ -253,6 +259,30 @@ namespace UiSampleMigrat.ViewModels
                 Email = this.Profile.Email,
                 ProfileImage = ImageSource.FromStream(()=> new MemoryStream(this.ProfileImageBytes)),
             };
+            var tmpC = ProfileViewModel.GetInstance().MyClient;
+
+            try
+            {
+                var r = Realm.GetInstance();
+                r.Write(() => {
+                    r.Add<RmbClientProfile>(new RmbClientProfile()
+                    {
+                        ID = Settings.ClientUID,
+                        PrimerNombre = tmpC.PrimerNombre,
+                        ProfilePhoto = ProfileImageBytes,
+                        SegundoNombre= tmpC.SegundoNombre,
+                        Apellido = tmpC.Apellido,
+                        SegundoApellido= tmpC.SegundoApellido,
+                        Email = tmpC.Email,
+                        Afiliado = tmpC.Afiliado.Date
+                    }, update: true);
+                });
+            }
+            catch (Exception ex)
+            {
+                UpdateProfileViewModel.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                 ex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+            }
         }
 
 

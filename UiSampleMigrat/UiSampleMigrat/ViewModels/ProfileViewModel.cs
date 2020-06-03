@@ -9,9 +9,12 @@ using Xamarin.Forms;
 
 namespace UiSampleMigrat.ViewModels
 {
+    using Realms;
     public class ProfileViewModel : NotificationObject
     {
         #region Propiedades
+        public byte[]  LocalCharge{ get; set; }
+
         private ClientProfile _myClient;
         public ClientProfile MyClient
         {
@@ -44,12 +47,10 @@ namespace UiSampleMigrat.ViewModels
             ApiClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
             if (profileInf != null)
             {
-                var profileImageBytes = Convert.FromBase64String(Convert.ToString(profileInf.PP));
+                LocalCharge = Convert.FromBase64String(Convert.ToString(profileInf.PP));
                 ImageSource profileImage;
-                if (profileImageBytes.Length != 0)
-                    profileImage = ImageSource.FromStream(() => new MemoryStream(profileImageBytes));
-                else
-                    profileImage = ImageSource.FromFile("userF.png");
+                profileImage = FromBytesToImageSource(LocalCharge);
+
 
 
                 MyClient = new ClientProfile()
@@ -70,7 +71,33 @@ namespace UiSampleMigrat.ViewModels
             else
             {
                 //Datos locales
+                //Consulta a Realm
+                var r = Realm.GetInstance();
+                var realmQuery = r.All<RmbClientProfile>().First<RmbClientProfile>();
+                LocalCharge = realmQuery.ProfilePhoto;
+                ImageSource profileImageSource = FromBytesToImageSource(LocalCharge);
+                
+                //Seteando datos del perfil
+                this.MyClient = new ClientProfile()
+                {
+                    ProfileImage = profileImageSource,
+                    Afiliado = realmQuery.Afiliado.Date,
+                    Apellido = realmQuery.Apellido,
+                    SegundoApellido = realmQuery.SegundoApellido,
+                    Email = realmQuery.Email,
+                    PrimerNombre= realmQuery.PrimerNombre,
+                    SegundoNombre = realmQuery.SegundoNombre,
+                };
+
+                this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
+
+                _instance = this;
             }
+            //Cargando pantalla de actualizacion
+            UpdateProfileViewModel.GetInstance().Nombres = $"{MyClient.PrimerNombre} {MyClient.SegundoNombre}";
+            UpdateProfileViewModel.GetInstance().Apellidos = $"{MyClient.Apellido} {MyClient.SegundoApellido}";
+            UpdateProfileViewModel.GetInstance().Profile.Email = $"{MyClient.Email}";
+            UpdateProfileViewModel.GetInstance().Profile.ProfileImage = FromBytesToImageSource(LocalCharge);
         }
         #endregion
 
@@ -85,6 +112,17 @@ namespace UiSampleMigrat.ViewModels
         }
         #endregion
 
+        #region Metodos
+
+        private ImageSource FromBytesToImageSource(byte[] rawBytes) {
+            if(rawBytes.Length!=0)
+                return ImageSource.FromStream(()=> new MemoryStream(rawBytes));
+            else
+                return ImageSource.FromFile("userF.png");
+        }
+
+
+        #endregion
 
     }
 }

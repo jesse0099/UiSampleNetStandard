@@ -172,4 +172,7 @@ Ej: Chavez Rivas.</value>
   <data name="migrt" xml:space="preserve">
     <value>es</value>
   </data>
+  <data name="logOut" xml:space="preserve">
+    <value>Cerrar Sesión</value>
+  </data>
 </root>

@@ -8,7 +8,7 @@ using UiSampleMigrat.Helpers;
 using UiSampleMigrat.Services;
 using Xamarin.Forms.Xaml;
 
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace UiSampleMigrat
 {
 
@@ -20,7 +20,12 @@ namespace UiSampleMigrat
 
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ1Njk0QDMxMzcyZTMyMmUzMFFRVk1DcmZkQkFueWtkTUpxaDczRG04cDEzYlkyMTZSZXhLR3B0WlQ1N2s9");
             InitializeComponent();
+            #if DEBUG
+            HotReloader.Current.Run(this);
+            #endif
+
             MainPage = new NavigationPage(new PaginaGeraldLogin());
 
         }
@@ -42,6 +47,8 @@ namespace UiSampleMigrat
             // Handle when your app starts
             if (Settings.IsRemembered & !Settings.SerializedToken.Equals(string.Empty))
                 MainPage = new RootHomePage();
+            //var config = new Realms.RealmConfiguration("default.realm");
+            //Realms.Realm.DeleteRealm(config);
         }
 
         protected override void OnSleep()

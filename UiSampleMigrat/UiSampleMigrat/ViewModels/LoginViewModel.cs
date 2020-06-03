@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Android.Widget;
+using Realms;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -141,6 +143,7 @@ namespace UiSampleMigrat.ViewModels
                 Settings.SerializedToken = Convert.ToString(response.Result);
                 Settings.IsRemembered = RememberMe;
 
+
                 //Informacion de perdil
                 var profileControllerString = $"{Constantes.CLIENTPROFILE}{Constantes.LOGINAUTHUSERPAR}={userLogin.userName}&{Constantes.LOGINAUTHPASSPAR}={userLogin.password}";
                 var profileResponse = await proc.Get<ApiClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, profileControllerString, Settings.SerializedToken);
@@ -153,22 +156,48 @@ namespace UiSampleMigrat.ViewModels
                     await Application.Current.MainPage.DisplayAlert("Error!", response.Message, "OK");
                     return;
                 }
+
                 ApiClientProfile profileInfo = (ApiClientProfile)profileResponse.Result;
                 this.ClientProfile = profileInfo;
-                
-                #region Carga de datos a otros ViewModels
-                UpdateProfileViewModel.GetInstance().Nombres = $"{profileInfo.PrimerNombre} {profileInfo.SegundoNombre}";
-                UpdateProfileViewModel.GetInstance().Apellidos = $"{profileInfo.Apellido} {profileInfo.SegundoApellido}";
-                UpdateProfileViewModel.GetInstance().Profile.Email = $"{profileInfo.Email}";
 
+
+
+                #region Carga de datos a otros ViewModels
                 var profileImageBytes = Convert.FromBase64String(Convert.ToString(profileInfo.PP));
                 ImageSource profileImage;
                 if (profileImageBytes.Length != 0)
                     profileImage = ImageSource.FromStream(() => new MemoryStream(profileImageBytes));
                 else
                     profileImage = ImageSource.FromFile("userF.png");
-                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = profileImage;
                 #endregion
+
+                //Control de recuerdos
+                if (Settings.IsRemembered)
+                {
+                    //Cargar perfil a BD local
+                    var r = Realm.GetInstance();
+                    try {
+                        r.Write(() => {
+                            r.Add(new RmbClientProfile()
+                            {
+                                ID = profileInfo.ID,
+                                ProfilePhoto = profileImageBytes,
+                                Afiliado = profileInfo.Afiliado,
+                                Apellido = profileInfo.Apellido,
+                                SegundoApellido = profileInfo.SegundoApellido,
+                                Email = profileInfo.Email,
+                                PrimerNombre = profileInfo.PrimerNombre,
+                                SegundoNombre = profileInfo.SegundoNombre,
+                            });
+                        });
+                    }
+                    catch (Exception ex) {
+                        UpdateProfileViewModel.CustomizedToast(Android.Graphics.Color.White,Android.Graphics.Color.Black,
+                            ex.Message,ToastLength.Long, iconResource:"error64",textSize:16);
+                    }
+                }
+
+
 
                 //Settings
                 Settings.FullName = $"{profileInfo.PrimerNombre} {profileInfo.SegundoNombre} {profileInfo.Apellido} {profileInfo.SegundoApellido}";

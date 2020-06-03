@@ -11,9 +11,11 @@ using Xamarin.Forms.Xaml;
 using SQLite;
 using UiSampleMigrat.Interfaces;
 
+
 namespace UiSampleMigrat.Views.Logins
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+
+    //[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PaginaGeraldLogin : ContentPage
     {
         RestServiceConsumer proc = new RestServiceConsumer();
@@ -36,5 +38,6 @@ namespace UiSampleMigrat.Views.Logins
             //Reconocimiento de Gestos 
 
         }
+
     }
 }

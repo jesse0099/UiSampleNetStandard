@@ -16,7 +16,7 @@ using Rg.Plugins.Popup.Enums;
 
 namespace UiSampleMigrat.Views.Home
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+   // [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RootHomePage : Xamarin.Forms.TabbedPage
     {
         private Orden selectedOrder;
@@ -66,6 +66,7 @@ namespace UiSampleMigrat.Views.Home
                 // Deselect the item.
                 if (sender is Xamarin.Forms.ListView lv) lv.SelectedItem = null;
             };
+
 
         }
 

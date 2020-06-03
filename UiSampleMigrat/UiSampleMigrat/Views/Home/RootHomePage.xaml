@@ -8,6 +8,8 @@
             BarTextColor="White"
             SelectedTabColor="#828282"
             SelectedItem="1"
+            xmlns:effects="clr-namespace:UiSampleMigrat.Effects"
+            xmlns:i18n="clr-namespace:UiSampleMigrat.Helpers"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             xmlns:viewmodels="clr-namespace:UiSampleMigrat.ViewModels"
             xmlns:models="clr-namespace:UiSampleMigrat.Models"
@@ -25,6 +27,8 @@
                     <RowDefinition Height="AUTO" />
                     <RowDefinition Height="AUTO" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="AUTO" />
+                    <RowDefinition Height="AUTO" />
                     <RowDefinition Height="AUTO" />
                     <RowDefinition Height="AUTO" />
                     <RowDefinition Height="AUTO" />
@@ -77,6 +81,7 @@
                         <Label Style="{StaticResource StatsNumberLabel}" Text="$957" />
                         <Label Style="{StaticResource StatsCaptionLabel}" Text="Consumido" />
                     </StackLayout>
+
                 </Grid>
 
 
@@ -97,8 +102,10 @@
                         </StackLayout>
                     </StackLayout>
                 </StackLayout>
-                <Button  Grid.Row="4" Margin="20" Style="{StaticResource FollowButton}" Text="Actualizar perfil" Clicked="Button_Clicked"/>
-
+               
+                <Button  Grid.Row="5" Margin="8" Style="{StaticResource FollowButton}" Text="Actualizar perfil" Clicked="Button_Clicked"/>
+                <Button effects:TintEffect.TintColor="White" x:Name="btnLogOut"  Margin="8,0,8,8" ImageSource="logOut.png" ContentLayout="Left,5" Grid.Row="6" Style="{StaticResource FollowButton}" Text="{i18n:Translate logOut}"/>
+                <ImageButton effects:TintEffect.TintColor="White"  Margin="8,0,8,8"  Source="logOut.png" Grid.Row="7"/>
             </Grid>
         </ScrollView>
     </ContentPage>
