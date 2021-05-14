@@ -18,7 +18,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 //Minimo SDK23
 
-[assembly: Xamarin.Forms.ExportEffect(typeof(DroidTintEffect), nameof(TintEffect))]
+[assembly: Xamarin.Forms.ExportEffect(typeof(DroidTintEffect), "TintEffect")]
 namespace UiSampleMigrat.Droid.Effects
 {
     public class DroidTintEffect : PlatformEffect

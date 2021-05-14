@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UiSampleMigrat.Models
+namespace UiSampleMigrat.Api_Models
 {
     public class ApiClientProfile
     {
@@ -14,7 +14,7 @@ namespace UiSampleMigrat.Models
         public string Apellido { get; set; }
         public string SegundoApellido { get; set; }
         public string Email { get; set; }
-        public object PP { get; set; }
+        public byte[] PP { get; set; }
         public DateTime Afiliado { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace UiSampleMigrat.ViewModels
         public LoginViewModel Login { get; set; }
         public RootExplorePageViewModel rootViewModel { get; set; }
         public UpdateProfileViewModel UpdateProfile { get; set; }
+        public TestPageViewModel Test { get; set; }
 
         public MainViewModel() {
 
@@ -24,7 +25,7 @@ namespace UiSampleMigrat.ViewModels
             this.Login = new LoginViewModel();
             this.Enterprises = new EnterprisePageViewModel();
             this.rootViewModel = new RootExplorePageViewModel();
-
+            this.Test = new TestPageViewModel();
         }
 
 

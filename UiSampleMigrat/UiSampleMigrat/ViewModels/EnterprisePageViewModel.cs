@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using UiSampleMigrat.Models;
+using UiSampleMigrat.Api_Models;
 using System.ComponentModel;
 using Xamarin.Forms;
 using UiSampleMigrat.Services;

@@ -11,7 +11,7 @@ namespace UiSampleMigrat.Models
         #region Acceso a la Api
         //public  static  string BASEURL = "https://eecommerapi.conveyor.cloud/";
         //public const string BASEURL = "http://192.168.100.33:45455/";
-        public const string BASEURL = "http://192.168.2.133:45455/";
+        public const string BASEURL = "http://192.168.100.207:45455/";
         public const string COMMEPREFIX = "/api/comme";
         public const string COMMEGETBYCAT = "/getByCat?category=";
         public const string COMMEGETSUCBYCOMME = "/getSucByCommer?idCommer=";

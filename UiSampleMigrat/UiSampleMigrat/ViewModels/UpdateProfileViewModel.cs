@@ -135,7 +135,7 @@ namespace UiSampleMigrat.ViewModels
 
         #region Metodos
         public async void UpdateCommandExecute() {
-
+            bool updateCredentials = false;
             RestServiceConsumer service;
             SetActivity(true);
             //Conexion
@@ -183,30 +183,48 @@ namespace UiSampleMigrat.ViewModels
                     return;
                 }
 
-                //Chequeo de repeticio de nueva contraseña
-                if (this.NewPassword != this.RepeatPassword)
+                //Se quiere actualizar algo de la seccion de credenciales?
+                if (!this.NewPassword.Equals(string.Empty) || !this.RepeatPassword.Equals(string.Empty))
                 {
-                    SetActivity(false);
-                    //No coinciden las contraseñas
-                    CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
-                    Languages.PasswordsShouldMatch, iconResource: "error64", textSize: 16);
-                    return;
+                    //Todos los datos fueron proporcionados?
+                    if (NewPassword.Equals(string.Empty) || RepeatPassword.Equals(string.Empty))
+                    {
+                        SetActivity(false);
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        Languages.AllDataNeeded, iconResource: "error64", textSize: 16);
+                        return;
+                    }
+                    //Chequeo de repeticion de nueva contraseña
+                    if (this.NewPassword != this.RepeatPassword)
+                    {
+                        SetActivity(false);
+                        //No coinciden las contraseñas
+                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                        Languages.PasswordsShouldMatch, iconResource: "error64", textSize: 16);
+                        return;
+                    }
+                    else
+                        updateCredentials = true;
                 }
 
+
+                //Creacion del modelo a enviar
                 Stream streamedImage = GetImageSourceStream(this.Profile.ProfileImage);
-                byte[] profileByteArray = null;
-                profileByteArray = StreamToByteArray(streamedImage);
-                this.ProfileImageBytes = profileByteArray;
+                this.ProfileImageBytes = StreamToByteArray(streamedImage);
+                
+
                 var token = Settings.SerializedToken;
-                var posted = new ApiClientProfileFix()
+
+                var posted = new ApiPlainClientProfile()
                 {
-                    Email = this.Profile.Email,
-                    PP = profileByteArray,
                     ID = Settings.ClientUID,
                     PrimerNombre = this.Nombres.Split(' ')[0],
                     SegundoNombre = this.Nombres.Split(' ')[1],
                     Apellido = this.Apellidos.Split(' ')[0],
                     SegundoApellido = this.Apellidos.Split(' ')[1],
+                    Email = this.Profile.Email,
+                    PP = this.ProfileImageBytes,
+                    Afiliado = DateTime.Now
                 };
 
                 var posted2 = new ApiClientCredentials()
@@ -217,25 +235,46 @@ namespace UiSampleMigrat.ViewModels
                     UserName = "NONE"
                 };
 
-                var result = await service.Put<ApiClientProfileFix>(Constantes.BASEURL, Constantes.CLIENTPREFIX, Constantes.CLIENTUPDATEPROFILE, posted, token);
-                var result2 = await service.Put<ApiClientCredentials>(Constantes.BASEURL,Constantes.CLIENTPREFIX,Constantes.CLIENTUPDATECREDENTIALS,posted2,token) ;
-                if (!result.IsSuccesFull || !result2.IsSuccesFull)
+                Response result2=null;
+                var result = await service.Put<ApiPlainClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, Constantes.CLIENTUPDATEPROFILE, posted, token);
+                if(updateCredentials)
+                    result2 = await service.Put<ApiClientCredentials>(Constantes.BASEURL,Constantes.CLIENTPREFIX,Constantes.CLIENTUPDATECREDENTIALS,posted2,token) ;
+
+                if (updateCredentials)
                 {
-                    SetActivity(false);
-                    //Error en la peticion
-                    if(!result.IsSuccesFull)
+                    if (!result.IsSuccesFull || !result2.IsSuccesFull)
+                    {
+                        SetActivity(false);
+                        //Error en la peticion
+                        if (!result.IsSuccesFull)
+                        {
+                            CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                            result.Message, iconResource: "error64", textSize: 16);
+                            SetActivity(false);
+                            return;
+                        }
+                        else
+                            CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                            result2.Message, iconResource: "error64", textSize: 16);
+                            SetActivity(false);
+                        return;
+                    }
+                    Settings.SuccesfullPassword = this.NewPassword;
+                }
+                else {
+                    if (!result.IsSuccesFull)
+                    {
                         CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
                         result.Message, iconResource: "error64", textSize: 16);
-                    else
-                        CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
-                        result2.Message, iconResource: "error64", textSize: 16);
-                    return;
+                        SetActivity(false);
+                        return;
+                    }
                 }
+
                 SetActivity(false);
                 CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
                     Languages.UpdatedProfile,iconResource:"ok96",textSize:16);
-                Settings.SuccesfullPassword = this.NewPassword;
-                UpdateLocalProfileInfo();
+                UpdateLocalProfileInfo(posted);
 
             }
             catch (Exception ex)
@@ -248,17 +287,27 @@ namespace UiSampleMigrat.ViewModels
             
         }
 
-        private void UpdateLocalProfileInfo() {
-            //Aqui iria mi realm o mi sqlite.Pero no funciona ninguno ajjajaj
+        private void UpdateLocalProfileInfo(ApiPlainClientProfile newValue) {
+        
+            var oldDate = ProfileViewModel.GetInstance().MyClient.Afiliado;
+
+         
+            ImageSource profileImage = null;
+            if (this.ProfileImageBytes.Length != 0)
+                profileImage = ImageSource.FromStream(() => new MemoryStream(this.ProfileImageBytes));
+
+            ProfileViewModel.GetInstance().NombreApellido = $"{newValue.PrimerNombre} {newValue.Apellido}";
 
             ProfileViewModel.GetInstance().MyClient = new ClientProfile() {
-                PrimerNombre = this.Nombres.Split(' ')[0],
-                SegundoNombre = this.Nombres.Split(' ')[1],
-                Apellido = this.Apellidos.Split(' ')[0],
-                SegundoApellido = this.Apellidos.Split(' ')[1],
-                Email = this.Profile.Email,
-                ProfileImage = ImageSource.FromStream(()=> new MemoryStream(this.ProfileImageBytes)),
+                PrimerNombre = newValue.PrimerNombre,
+                SegundoNombre = newValue.SegundoNombre,
+                Apellido = newValue.Apellido,
+                SegundoApellido = newValue.SegundoApellido,
+                Email = newValue.Email,
+                ProfileImage = profileImage,
+                Afiliado = oldDate.Date
             };
+            
             var tmpC = ProfileViewModel.GetInstance().MyClient;
 
             try
@@ -269,7 +318,7 @@ namespace UiSampleMigrat.ViewModels
                     {
                         ID = Settings.ClientUID,
                         PrimerNombre = tmpC.PrimerNombre,
-                        ProfilePhoto = ProfileImageBytes,
+                        ProfilePhoto = this.ProfileImageBytes,
                         SegundoNombre= tmpC.SegundoNombre,
                         Apellido = tmpC.Apellido,
                         SegundoApellido= tmpC.SegundoApellido,
@@ -336,7 +385,7 @@ namespace UiSampleMigrat.ViewModels
         }
 
         private bool AllDataChecker() {
-            if (this.OldPassword.Equals(string.Empty) || this.NewPassword.Equals(string.Empty)
+            if (this.OldPassword.Equals(string.Empty)
                 || this.Profile.Email.Equals(string.Empty) || this.Nombres.Equals(string.Empty) || this.Apellidos.Equals(string.Empty))
                 return false;
             else
@@ -372,6 +421,7 @@ namespace UiSampleMigrat.ViewModels
         private void EmptyStringInitializer() {
             this.OldPassword = string.Empty;
             this.NewPassword = string.Empty;
+            this.RepeatPassword = string.Empty;
         }
         #endregion
 

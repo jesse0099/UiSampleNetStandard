@@ -5,14 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UiSampleMigrat.Models;
+using UiSampleMigrat.Api_Models;
 using Xamarin.Forms;
+using UiSampleMigrat.Helpers;
 
 namespace UiSampleMigrat.ViewModels
 {
     using Realms;
+    using System.Windows.Input;
+    using UiSampleMigrat.Views.Logins;
+
     public class ProfileViewModel : NotificationObject
     {
         #region Propiedades
+        private ICommand _logOutCommand;
+
+        public ICommand LogOutCommand
+        {
+            get { return _logOutCommand; }
+            set
+            {
+                _logOutCommand = value;
+                onPropertyChanged();
+            }
+        }
+
         public byte[]  LocalCharge{ get; set; }
 
         private ClientProfile _myClient;
@@ -44,7 +61,7 @@ namespace UiSampleMigrat.ViewModels
 
 
             //Obtencion de datos del perfil 
-            ApiClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
+            ApiPlainClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
             if (profileInf != null)
             {
                 LocalCharge = Convert.FromBase64String(Convert.ToString(profileInf.PP));
@@ -65,6 +82,8 @@ namespace UiSampleMigrat.ViewModels
                 };
 
                 this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
+
+                this.LogOutCommand = new Command(LogOutCommandExecute);
 
                 _instance = this;
             }
@@ -91,6 +110,8 @@ namespace UiSampleMigrat.ViewModels
 
                 this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
 
+                this.LogOutCommand = new Command(LogOutCommandExecute);
+
                 _instance = this;
             }
             //Cargando pantalla de actualizacion
@@ -113,7 +134,26 @@ namespace UiSampleMigrat.ViewModels
         #endregion
 
         #region Metodos
-
+        public static void DeleteAllClientsRealm(List<RmbClientProfile> objects)
+        {
+            var realm = Realm.GetInstance();
+            using (var transaction = realm.BeginWrite())
+            {
+                foreach (var item in objects)
+                    realm.Remove(item);
+                transaction.Commit();
+            }
+        }
+        public  void LogOutCommandExecute()
+        {
+            //Limpiar Settings
+            Settings.IsRemembered = false;
+            var r = Realm.GetInstance();
+            //Realm List o f Objects
+            List<RmbClientProfile> _realms = r.All<RmbClientProfile>().ToList();
+            DeleteAllClientsRealm(_realms);
+            Application.Current.MainPage = new NavigationPage(new PaginaGeraldLogin());
+        }
         private ImageSource FromBytesToImageSource(byte[] rawBytes) {
             if(rawBytes.Length!=0)
                 return ImageSource.FromStream(()=> new MemoryStream(rawBytes));

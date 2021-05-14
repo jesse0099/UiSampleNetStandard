@@ -133,15 +133,13 @@
     <value>Remember Me</value>
   </data>
   <data name="nameToolTip" xml:space="preserve">
-    <value>Write both names separated by a space.
-Eg: Jese Chavez .</value>
+    <value>Write both names separated by a space, Eg: Jese Chavez.</value>
   </data>
   <data name="permissionRequired" xml:space="preserve">
     <value>Permissions are required.</value>
   </data>
   <data name="givenNameTltip" xml:space="preserve">
-    <value>Write both last names separated by a space.
-Eg: Chavez Rivas.</value>
+    <value>Write both last names separated by a space, Eg: Chavez Rivas.</value>
   </data>
   <data name="signin" xml:space="preserve">
     <value>Sign In</value>
@@ -156,12 +154,10 @@ Eg: Chavez Rivas.</value>
     <value>Insufficient data.</value>
   </data>
   <data name="wrongWrittenNames" xml:space="preserve">
-    <value>Write both names separated by a space.
-Eg: Jese Chavez .</value>
+    <value>Write both names separated by a space, Eg: Jese Chavez.</value>
   </data>
   <data name="wrongWrittenGivenNames" xml:space="preserve">
-    <value>Write both last names separated by a space.
-Eg: Chavez Rivas.</value>
+    <value>Write both last names separated by a space, Eg: Chavez Rivas.</value>
   </data>
   <data name="PasswordsNomatch." xml:space="preserve">
     <value>Passwords do not match.</value>

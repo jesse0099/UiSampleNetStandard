@@ -20,13 +20,14 @@ namespace UiSampleMigrat.Helpers
         }
 
         #region Setting Constants
-
+        //lSUID = last session UID
         private const string clientUID = "ClientUID";
         private const string serializedToken = "SerializedToken";
         private const string logguedInfo = "LogguedInfo";
         private const string fullName = "FullName";
         private const string isRemenbered = "IsRemembered";
         private const string succesfullPassword = "SuccesfullPassword";
+        private const string lSUID = "LSUID";  
         private static readonly string stringDefault = string.Empty;
         private static readonly bool boolDefault = false;
         private static readonly int intDefault = -1;
@@ -41,6 +42,17 @@ namespace UiSampleMigrat.Helpers
                 AppSettings.AddOrUpdateValue(succesfullPassword, value);
             }
         }
+
+        public static int LSUID {
+            get {
+                return AppSettings.GetValueOrDefault(lSUID,intDefault);
+            }
+            set {
+                 AppSettings.AddOrUpdateValue(lSUID, value);
+            }
+
+        }
+
         public static int ClientUID {
             get {
                 return AppSettings.GetValueOrDefault(clientUID,intDefault);

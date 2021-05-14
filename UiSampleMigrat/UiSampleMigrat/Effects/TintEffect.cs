@@ -8,7 +8,7 @@ namespace UiSampleMigrat.Effects
 {
         public static class TintEffectExtension {
             public static readonly BindableProperty TintColorProperty = BindableProperty.CreateAttached
-                ("TintColor", typeof(Color), typeof(TintEffect), Color.Black, propertyChanged: OnTintColorPropertyChanged);
+                ("TintColor", typeof(Color), typeof(TintEffect), default, propertyChanged: OnTintColorPropertyChanged);
             public static Color GetTintColor(BindableObject bindable)
             {
                 return (Color)bindable.GetValue(TintColorProperty);
@@ -21,7 +21,7 @@ namespace UiSampleMigrat.Effects
             {
                 if (bindable is ImageButton current)
                 {
-                    if ((Color)newValue != Color.Black)
+                    if ((Color)newValue != default)
                     {
                         if (!current.Effects.Any(e => e is TintEffect))
                             current.Effects.Add(Effect.Resolve(nameof(TintEffect)));

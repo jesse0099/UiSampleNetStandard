@@ -133,15 +133,13 @@
     <value>Recuerdame</value>
   </data>
   <data name="nameToolTip" xml:space="preserve">
-    <value>Escribe ambos nombres separados por un espacio.
-Ej: Jese Chavez </value>
+    <value>Escribe ambos nombres separados por un espacio, Ej: Jese Chavez.</value>
   </data>
   <data name="permissionRequired" xml:space="preserve">
     <value>Se requieren permisos.</value>
   </data>
   <data name="givenNameTltip" xml:space="preserve">
-    <value>Escriba ambos apellidos separados por un espacio.
-Ej: Chavez Rivas.</value>
+    <value>Escriba ambos apellidos separados por un espacio, Ej: Chavez Rivas.</value>
   </data>
   <data name="signin" xml:space="preserve">
     <value>Inicio de Sesión</value>
@@ -156,12 +154,10 @@ Ej: Chavez Rivas.</value>
     <value>Datos insuficientes.</value>
   </data>
   <data name="wrongWrittenNames" xml:space="preserve">
-    <value>Escriba ambos nombres separados por un espacio.
-Ej: Jese Chavez.</value>
+    <value>Escriba ambos nombres separados por un espacio, Ej: Jese Chavez.</value>
   </data>
   <data name="wrongWrittenGivenNames" xml:space="preserve">
-    <value>Escriba ambos apellidos separados por un espacio.
-Ej: Chavez Rivas.</value>
+    <value>Escriba ambos apellidos separados por un espacio, Ej: Chavez Rivas.</value>
   </data>
   <data name="PasswordsNomatch." xml:space="preserve">
     <value>Las contraseñas no coinciden.</value>

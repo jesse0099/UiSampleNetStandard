@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UiSampleMigrat.Effects;
 using UiSampleMigrat.Models;
+using UiSampleMigrat.ViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -64,7 +65,7 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
 
         private async Task<bool> ChangeProfileImage() {
             await CrossMedia.Current.Initialize();
-            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported)
+            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported )
             {
                 return false;
             }
@@ -82,11 +83,15 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
                     Bussy(false);
                     return false;
                 }
-                imgProfile.Source = ImageSource.FromStream(() =>
+
+                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = ImageSource.FromStream(() =>
                 {
                     var stream = file.GetStream();
                     return stream;
                 });
+
+                imgProfile.Source = UpdateProfileViewModel.GetInstance().Profile.ProfileImage;
+
                 Bussy(false);
                 return true;
             }

@@ -7,11 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using UiSampleMigrat.Models;
+using System.Windows.Input;
+using UiSampleMigrat.Helpers;
+using Realms;
+using UiSampleMigrat.Views.Logins;
 
 namespace UiSampleMigrat.ViewModels
 {
     public class RootExplorePageViewModel : NotificationObject
     {
+        #region Propiedades
+
         private ObservableCollection<Categoria> categoriaslist;
 
         public ObservableCollection<Categoria> CategoriasList
@@ -20,7 +26,7 @@ namespace UiSampleMigrat.ViewModels
             set
             {
                 categoriaslist = value;
-               // onPropertyChanged();
+                // onPropertyChanged();
             }
 
         }
@@ -29,10 +35,15 @@ namespace UiSampleMigrat.ViewModels
         public Categoria CategoriaSeleccionada
         {
             get { return categoriaSeleccionada; }
-            set { categoriaSeleccionada = value;
+            set
+            {
+                categoriaSeleccionada = value;
                 onPropertyChanged();
             }
         }
+
+        #endregion
+
 
 
         public RootExplorePageViewModel()
@@ -42,9 +53,10 @@ namespace UiSampleMigrat.ViewModels
             PropertyChanged += RootExplorePageViewModel_PropertyChanged;
             //Valores de testeo
             CategoriasList = new ObservableCollection<Categoria>();
-            CategoriasList.Add(new Categoria(){ NombreCategoria="Farmacias",Vendedores=89,Portada="Drugs.png"});
-            CategoriasList.Add(new Categoria(){ NombreCategoria="Restaurantes",Vendedores=79,Portada="restaurant.png"});
-            CategoriasList.Add(new Categoria(){ NombreCategoria="Electronicos",Vendedores=29,Portada="Elec.png"});
+            CategoriasList.Add(new Categoria() { NombreCategoria = "Farmacias", Vendedores = 89, Portada = "Drugs.png" });
+            CategoriasList.Add(new Categoria() { NombreCategoria = "Restaurantes", Vendedores = 79, Portada = "restaurant.png" });
+            CategoriasList.Add(new Categoria() { NombreCategoria = "Electronicos", Vendedores = 29, Portada = "Elec.png" });
+
 
         }
 
@@ -59,5 +71,8 @@ namespace UiSampleMigrat.ViewModels
                 }
             }
         }
+
+        
+
     }
 }

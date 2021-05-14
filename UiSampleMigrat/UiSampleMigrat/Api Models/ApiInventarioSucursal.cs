@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UiSampleMigrat.Api_Models;
 
-namespace UiSampleMigrat.Models
+namespace UiSampleMigrat.Api_Models
 {
     public class ApiInventarioSucursal
     {

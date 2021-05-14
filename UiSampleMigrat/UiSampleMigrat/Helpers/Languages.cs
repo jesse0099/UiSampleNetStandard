@@ -24,7 +24,7 @@ namespace UiSampleMigrat.Models
 
         public static string UpdatedProfile => Resource.updatedProfile;
         public static string AllDataNeeded => Resource.alldataNeeded;
-        public static string WronWGivenNames => Resource. wrongWrittenGivenNames;
+        public static string WronWGivenNames => Resource.wrongWrittenGivenNames;
         public static string WronWGNames => Resource.wrongWrittenNames;
         public static string PasswordsShouldMatch => Resource.passwordsshouldmatch;
         public static string PasswordsDontMatch => Resource.PasswordsNomatch_;

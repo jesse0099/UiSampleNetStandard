@@ -10,6 +10,7 @@ using System.Windows.Input;
 using UiSampleMigrat.Helpers;
 using UiSampleMigrat.Interfaces;
 using UiSampleMigrat.Models;
+using UiSampleMigrat.Api_Models;
 using UiSampleMigrat.Services;
 using UiSampleMigrat.Views.Home;
 using Xamarin.Forms;
@@ -44,9 +45,9 @@ namespace UiSampleMigrat.ViewModels
             }
         }
 
-        private ApiClientProfile _clientProfile;
+        private ApiPlainClientProfile _clientProfile;
 
-        public ApiClientProfile ClientProfile
+        public ApiPlainClientProfile ClientProfile
         {
             get { return _clientProfile; }
             set { _clientProfile = value; }
@@ -144,9 +145,9 @@ namespace UiSampleMigrat.ViewModels
                 Settings.IsRemembered = RememberMe;
 
 
-                //Informacion de perdil
+                //Informacion de perfil
                 var profileControllerString = $"{Constantes.CLIENTPROFILE}{Constantes.LOGINAUTHUSERPAR}={userLogin.userName}&{Constantes.LOGINAUTHPASSPAR}={userLogin.password}";
-                var profileResponse = await proc.Get<ApiClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, profileControllerString, Settings.SerializedToken);
+                var profileResponse = await proc.Get<ApiPlainClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, profileControllerString, Settings.SerializedToken);
                 if (!profileResponse.IsSuccesFull)
                 {
                     await Device.InvokeOnMainThreadAsync(() => {
@@ -157,13 +158,13 @@ namespace UiSampleMigrat.ViewModels
                     return;
                 }
 
-                ApiClientProfile profileInfo = (ApiClientProfile)profileResponse.Result;
+                ApiPlainClientProfile profileInfo = (ApiPlainClientProfile)profileResponse.Result;
                 this.ClientProfile = profileInfo;
 
 
 
                 #region Carga de datos a otros ViewModels
-                var profileImageBytes = Convert.FromBase64String(Convert.ToString(profileInfo.PP));
+                var profileImageBytes = Convert.FromBase64String(profileInfo.PP.ToString());
                 ImageSource profileImage;
                 if (profileImageBytes.Length != 0)
                     profileImage = ImageSource.FromStream(() => new MemoryStream(profileImageBytes));

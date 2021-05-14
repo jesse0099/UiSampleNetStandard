@@ -12,7 +12,7 @@ namespace UiSampleMigrat.Models
 
         private int _idCarrito;
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int IdCarrito
         {
             get { return _idCarrito; }

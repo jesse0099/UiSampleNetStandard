@@ -93,6 +93,10 @@ namespace UiSampleMigrat.Views.Home
                 await PopupNavigation.Instance.PushAsync(popupProperties);
             }
         }
+        private void BtnHamb_Clicked(object sender, EventArgs e)
+        {
+            naviDrawer.ToggleDrawer();
+        }
 
         protected override bool OnBackButtonPressed()
         {

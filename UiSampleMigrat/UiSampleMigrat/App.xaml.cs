@@ -20,13 +20,16 @@ namespace UiSampleMigrat
 
         public App()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ1Njk0QDMxMzcyZTMyMmUzMFFRVk1DcmZkQkFueWtkTUpxaDczRG04cDEzYlkyMTZSZXhLR3B0WlQ1N2s9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDQ1OTEyQDMxMzkyZTMxMmUzMGFYUVRyaFV6U1kwWFc4QUhIbWNCOEsxRkpOSjhVSHhsa3dtWDhodDhpY3c9");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ1Njk0QDMxMzcyZTMyMmUzMFFRVk1DcmZkQkFueWtkTUpxaDczRG04cDEzYlkyMTZSZXhLR3B0WlQ1N2s9");
             InitializeComponent();
             #if DEBUG
             HotReloader.Current.Run(this);
             #endif
 
             MainPage = new NavigationPage(new PaginaGeraldLogin());
+
+
 
         }
 
