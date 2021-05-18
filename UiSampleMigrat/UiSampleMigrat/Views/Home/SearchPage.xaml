@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="UiSampleMigrat.Views.Home.SearchPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fax="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
+             xmlns:viewmodels="clr-namespace:UiSampleMigrat.ViewModels"
+             BindingContext="{Binding  Main,Source={StaticResource Locator}}"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ListViewCategoriesTemplate">
+                <ViewCell  BindingContext="{Binding  RootExplorer}">
+
+                    <Frame    Margin="5,5,5,5" Padding="2" CornerRadius="10" HasShadow="True">
+                        <AbsoluteLayout IsClippedToBounds="False">
+                            <StackLayout  AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"  Orientation="Vertical">
+                                <Image  Source="{Binding Portada}" AbsoluteLayout.LayoutBounds="0.5,0.5,1,1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill" HeightRequest="150"   HorizontalOptions="FillAndExpand"  />
+                                <StackLayout  Orientation="Vertical" HorizontalOptions="FillAndExpand" AbsoluteLayout.LayoutBounds="0,0.2" AbsoluteLayout.LayoutFlags="PositionProportional">
+                                    <Label TextColor="#0d0937" HorizontalOptions="Start" Text="{Binding NombreCategoria}" FontSize="Medium"></Label>
+                                    <StackLayout  Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                            <Label TextColor="DarkGray" Text="Vendedores : " FontSize="Small"></Label>
+                                            <Label TextColor="DarkGray" HorizontalOptions="Start"  Text="{Binding Vendedores}" FontSize="Small"></Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                            <fax:FloatingActionButton         
+                                                                  AbsoluteLayout.LayoutFlags="YProportional,XProportional" 
+                                                                  AbsoluteLayout.LayoutBounds="1,1"
+                                                                  WidthRequest="56"
+                                                                  HeightRequest="56"
+                                                                  ButtonColor="{StaticResource ButtonBackgroundColor}"
+                                                                  ImageSource="Go96.png"
+                                                                  HorizontalOptions="EndAndExpand">
+                            </fax:FloatingActionButton>
+                        </AbsoluteLayout>
+                    </Frame>
+
+                </ViewCell>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView  VerticalOptions="FillAndExpand" >
+        <ScrollView.BindingContext>
+            <viewmodels:RootExplorePageViewModel></viewmodels:RootExplorePageViewModel>
+        </ScrollView.BindingContext>
+        <StackLayout HorizontalOptions="Fill">
+            <Frame CornerRadius="20" Margin="5,5,5,5" HeightRequest="25">
+                <SearchBar Placeholder="Restaurantes" >
+
+                </SearchBar>
+            </Frame>
+            <ListView x:Name="lstCats" BackgroundColor="White" SelectionMode="Single"  ItemTemplate="{StaticResource ListViewCategoriesTemplate}"
+                  ItemsSource="{Binding CategoriasList,Mode=TwoWay}" 
+                  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"
+                  SelectedItem="{Binding CategoriaSeleccionada ,Mode=TwoWay}"
+                      HasUnevenRows="True">
+            </ListView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

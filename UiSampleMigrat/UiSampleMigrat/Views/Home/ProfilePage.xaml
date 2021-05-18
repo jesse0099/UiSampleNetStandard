@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:UiSampleMigrat.ViewModels"
+             xmlns:effects="clr-namespace:UiSampleMigrat.Effects"
+             xmlns:i18n="clr-namespace:UiSampleMigrat.Helpers"
+             x:Class="UiSampleMigrat.Views.Home.ProfilePage">
+    <ContentPage.BindingContext>
+        <viewmodels:ProfileViewModel></viewmodels:ProfileViewModel>
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
+            </Grid.RowDefinitions>
+
+
+            <Image Aspect="AspectFill" Source="HeaderBackground.png" />
+            <Image Aspect="Fill" Margin="0,-1,0,-1" Source="CurvedMask.png" VerticalOptions="End" />
+
+            <StackLayout>
+                <Frame CornerRadius="100" 
+                       HeightRequest="200"
+                       WidthRequest="200"
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                    <Image Source="{Binding MyClient.ProfileImage}" 
+                           Aspect="Fill"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Frame>
+            </StackLayout>
+
+            <!--  Profile Name  -->
+            <StackLayout Grid.Row="1" Padding="0,50,0,00" HorizontalOptions="Center">
+                <Label Style="{StaticResource ProfileNameLabel}" Text="{Binding NombreApellido}" />
+                <Label Margin="0,-5" Style="{StaticResource ProfileTagLabel}" Text="{Binding MyClient.Email}" />
+            </StackLayout>
+
+            <!--  Social Stats Section  -->
+            <Grid Grid.Row="2" Margin="0,30" ColumnSpacing="0" RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackLayout>
+                    <Label Style="{StaticResource StatsNumberLabel}" Text="33" />
+                    <Label Style="{StaticResource StatsCaptionLabel}" Text="Compras realizadas" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1">
+                    <Label Style="{StaticResource StatsNumberLabel}" Text="94" />
+                    <Label Style="{StaticResource StatsCaptionLabel}" Text="Pendientes" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="2">
+                    <Label Style="{StaticResource StatsNumberLabel}" Text="$957" />
+                    <Label Style="{StaticResource StatsCaptionLabel}" Text="Consumido" />
+                </StackLayout>
+
+            </Grid>
+
+
+            <StackLayout Orientation="Vertical" Grid.Row="3"   HorizontalOptions="CenterAndExpand" >
+                <Label Margin="20,0,0,40" VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="3" Style="{StaticResource MainBodyLabel}" Text="{Binding MyClient.PrimerNombre,StringFormat='Bienvenido {0} !'}" />
+                <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Body" Text="Nombre : "></Label>
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Small" Text="{Binding MyClient.PrimerNombre}"></Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Body" Text="Apellido: "></Label>
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Small" Text="{Binding MyClient.Apellido}"></Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Body" Text="Fecha de registro : "></Label>
+                        <Label HorizontalOptions="Start" VerticalOptions="Center" FontSize="Small" x:Name="lblDateRegistered" Text="{Binding MyClient.Afiliado,StringFormat=' {0:dd/MM/yyyy} '}"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <Button  x:Name="btnUpdateProf" Grid.Row="5" Margin="8" Style="{StaticResource FollowButton}" Text="Actualizar perfil" Clicked="BtnUpdateProf_Clicked"/>
+
+            <Button Command="{Binding LogOutCommand}" effects:TintEffectExtension.TintColor="White" x:Name="btnLogOutCWhite"  Margin="8,0,8,8" ImageSource="logOutCWhite.png" ContentLayout="Left,5" Grid.Row="6" Style="{StaticResource FollowButton}" Text="{i18n:Translate logOut}"/>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

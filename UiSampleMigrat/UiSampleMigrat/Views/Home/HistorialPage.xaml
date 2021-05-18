@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage  x:Class="UiSampleMigrat.Views.Home.HistorialPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:homeviews="clr-namespace:UiSampleMigrat.Views.Home"
+             SelectedTabColor="#828282"
+             BarBackgroundColor="White"
+             BarTextColor="Black"
+             SelectedItem="1">
+    <homeviews:DetailPage   Title="Detalle"   Visual="Material"/>
+    <homeviews:ReviewPage   Title="Resumen"   Visual="Material"/>
+</TabbedPage>
