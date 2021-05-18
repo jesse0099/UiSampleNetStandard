@@ -64,15 +64,16 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
         }
 
         private async Task<bool> ChangeProfileImage() {
-            var init = await CrossMedia.Current.Initialize();
-            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported && !init)
+            //var init =
+            await CrossMedia.Current.Initialize();
+            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported )
             {
                 return false;
             }
             else
             {
                 Bussy(true);
-                //await Task.Delay(1000);
+                await Task.Delay(1000);
                 var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
                 {
                     Directory = "Images",

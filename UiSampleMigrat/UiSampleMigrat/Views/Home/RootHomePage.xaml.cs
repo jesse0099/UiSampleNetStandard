@@ -16,7 +16,7 @@ using Rg.Plugins.Popup.Enums;
 
 namespace UiSampleMigrat.Views.Home
 {
-   // [XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RootHomePage : Xamarin.Forms.TabbedPage
     {
         private Orden selectedOrder;
@@ -36,7 +36,7 @@ namespace UiSampleMigrat.Views.Home
             this.UnselectedTabColor = Color.White;
 
             MessagingCenter.Subscribe<TestPageViewModel>(this,"toggleDrawer",(a)=> {
-                naviDrawer.ToggleDrawer();
+               // naviDrawer.ToggleDrawer();
             });
 
             //LecturaMensajes
