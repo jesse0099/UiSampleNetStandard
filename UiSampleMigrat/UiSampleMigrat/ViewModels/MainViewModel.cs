@@ -20,14 +20,14 @@ namespace UiSampleMigrat.ViewModels
 
         public MainViewModel() {
 
+            this.Login = new LoginViewModel();
             this.Profile = new ProfileViewModel();
             this.UpdateProfile = new UpdateProfileViewModel();
             this.Inventario = new InventarioPageViewModel();
-            this.RootExplorer = new RootExplorePageViewModel();
-            this.Login = new LoginViewModel();
             this.Enterprises = new EnterprisePageViewModel();
-            this.rootViewModel = new RootExplorePageViewModel();
             this.Test = new TestPageViewModel();
+            this.RootExplorer = new RootExplorePageViewModel();
+            
         }
 
 

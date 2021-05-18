@@ -18,11 +18,6 @@
     <!--Pages can be added as references or inline-->
     <ContentPage Title="Test" IconImageSource="password.png" Visual="Material"
                  xmlns:navigationdrawer="clr-namespace:Syncfusion.SfNavigationDrawer.XForms;assembly=Syncfusion.SfNavigationDrawer.XForms">
-        <ContentPage.Resources>
-            <ResourceDictionary>
-                <viewmodels:TestPageViewModel x:Key="TestVm"></viewmodels:TestPageViewModel>
-            </ResourceDictionary>
-        </ContentPage.Resources>
         <ScrollView BindingContext="{Binding Main, Source={StaticResource Locator}}">
             <navigationdrawer:SfNavigationDrawer x:Name="naviDrawer">
 
@@ -33,10 +28,8 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <StackLayout BackgroundColor="#1aa1d6">
-
-                        </StackLayout>
-                        <Button x:Name="btnHamb"
+                        <StackLayout BackgroundColor="#1aa1d6" Orientation="Horizontal">
+                            <Button x:Name="btnHamb"
                                 ImageSource="icon.png"
                                 HeightRequest="50"
                                 WidthRequest="50"
@@ -48,8 +41,8 @@
                                 <!--BindingContext="{Binding Test}"-->
                                 <!--Command="{Binding SlideCommand}">-->
 
-                        </Button>
-                        <Label x:Name="lblhambHeader"
+                            </Button>
+                            <Label x:Name="lblhambHeader"
                                HeightRequest="50"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
@@ -58,7 +51,8 @@
                                TextColor="White"
                                BackgroundColor="#1aa1d6">
 
-                        </Label>
+                            </Label>
+                        </StackLayout>
                         <Label Grid.Row="1"
                                x:Name="lblContent"
                                VerticalOptions="Center"
@@ -73,7 +67,7 @@
                 <!--Drawer Default-->
                 <navigationdrawer:SfNavigationDrawer.DefaultDrawerSettings>
 
-                    <navigationdrawer:DrawerSettings EnableSwipeGesture="False" 
+                    <navigationdrawer:DrawerSettings EnableSwipeGesture="True" 
                                                      DrawerHeight="290"                                                    
                                                      DrawerHeaderHeight="110"
                                                      Position="Bottom"

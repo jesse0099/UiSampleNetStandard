@@ -101,7 +101,11 @@ namespace UiSampleMigrat.Helpers
             }
         }
 
-
+        //Limpiar todas las configuraciones de la aplicacion
+        public static void AppSettingsClear()
+        {
+            AppSettings.Clear();
+        }
 
     }
 }

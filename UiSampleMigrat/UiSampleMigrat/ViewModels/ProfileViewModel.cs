@@ -59,66 +59,72 @@ namespace UiSampleMigrat.ViewModels
         public ProfileViewModel()
         {
 
-
-            //Obtencion de datos del perfil 
-            ApiPlainClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
-            if (profileInf != null)
+            try
             {
-                LocalCharge = Convert.FromBase64String(Convert.ToString(profileInf.PP));
-                ImageSource profileImage;
-                profileImage = FromBytesToImageSource(LocalCharge);
-
-
-
-                MyClient = new ClientProfile()
+                //Obtencion de datos del perfil 
+                ApiPlainClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
+                if (profileInf != null)
                 {
-                    ProfileImage = profileImage,
-                    Apellido = profileInf.Apellido,
-                    PrimerNombre = profileInf.PrimerNombre,
-                    SegundoNombre = profileInf.SegundoNombre,
-                    SegundoApellido = profileInf.SegundoApellido,
-                    Email = profileInf.Email,
-                    Afiliado = profileInf.Afiliado
-                };
+                    LocalCharge = Convert.FromBase64String(Convert.ToString(profileInf.PP));
+                    ImageSource profileImage;
+                    profileImage = FromBytesToImageSource(LocalCharge);
 
-                this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
 
-                this.LogOutCommand = new Command(LogOutCommandExecute);
 
-                _instance = this;
-            }
-            else
-            {
-                //Datos locales
-                //Consulta a Realm
-                var r = Realm.GetInstance();
-                var realmQuery = r.All<RmbClientProfile>().First<RmbClientProfile>();
-                LocalCharge = realmQuery.ProfilePhoto;
-                ImageSource profileImageSource = FromBytesToImageSource(LocalCharge);
-                
-                //Seteando datos del perfil
-                this.MyClient = new ClientProfile()
+                    MyClient = new ClientProfile()
+                    {
+                        ProfileImage = profileImage,
+                        Apellido = profileInf.Apellido,
+                        PrimerNombre = profileInf.PrimerNombre,
+                        SegundoNombre = profileInf.SegundoNombre,
+                        SegundoApellido = profileInf.SegundoApellido,
+                        Email = profileInf.Email,
+                        Afiliado = profileInf.Afiliado
+                    };
+
+                    this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
+
+                    this.LogOutCommand = new Command(LogOutCommandExecute);
+
+                    _instance = this;
+                }
+                else
                 {
-                    ProfileImage = profileImageSource,
-                    Afiliado = realmQuery.Afiliado.Date,
-                    Apellido = realmQuery.Apellido,
-                    SegundoApellido = realmQuery.SegundoApellido,
-                    Email = realmQuery.Email,
-                    PrimerNombre= realmQuery.PrimerNombre,
-                    SegundoNombre = realmQuery.SegundoNombre,
-                };
+                    //Datos locales
+                    //Consulta a Realm
+                    var r = Realm.GetInstance();
+                    var realmQuery = r.All<RmbClientProfile>().First<RmbClientProfile>();
+                    LocalCharge = realmQuery.ProfilePhoto;
+                    ImageSource profileImageSource = FromBytesToImageSource(LocalCharge);
 
-                this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
+                    //Seteando datos del perfil
+                    this.MyClient = new ClientProfile()
+                    {
+                        ProfileImage = profileImageSource,
+                        Afiliado = realmQuery.Afiliado.Date,
+                        Apellido = realmQuery.Apellido,
+                        SegundoApellido = realmQuery.SegundoApellido,
+                        Email = realmQuery.Email,
+                        PrimerNombre = realmQuery.PrimerNombre,
+                        SegundoNombre = realmQuery.SegundoNombre,
+                    };
 
-                this.LogOutCommand = new Command(LogOutCommandExecute);
+                    this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
 
-                _instance = this;
+                    this.LogOutCommand = new Command(LogOutCommandExecute);
+
+                    _instance = this;
+                }
+                //Cargando pantalla de actualizacion
+                UpdateProfileViewModel.GetInstance().Nombres = $"{MyClient.PrimerNombre} {MyClient.SegundoNombre}";
+                UpdateProfileViewModel.GetInstance().Apellidos = $"{MyClient.Apellido} {MyClient.SegundoApellido}";
+                UpdateProfileViewModel.GetInstance().Profile.Email = $"{MyClient.Email}";
+                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = FromBytesToImageSource(LocalCharge);
+
             }
-            //Cargando pantalla de actualizacion
-            UpdateProfileViewModel.GetInstance().Nombres = $"{MyClient.PrimerNombre} {MyClient.SegundoNombre}";
-            UpdateProfileViewModel.GetInstance().Apellidos = $"{MyClient.Apellido} {MyClient.SegundoApellido}";
-            UpdateProfileViewModel.GetInstance().Profile.Email = $"{MyClient.Email}";
-            UpdateProfileViewModel.GetInstance().Profile.ProfileImage = FromBytesToImageSource(LocalCharge);
+            catch (InvalidOperationException) {
+                //Inicializacion con DB realm vacia 
+            }
         }
         #endregion
 
@@ -147,7 +153,7 @@ namespace UiSampleMigrat.ViewModels
         public  void LogOutCommandExecute()
         {
             //Limpiar Settings
-            Settings.IsRemembered = false;
+            Settings.AppSettingsClear();
             var r = Realm.GetInstance();
             //Realm List o f Objects
             List<RmbClientProfile> _realms = r.All<RmbClientProfile>().ToList();

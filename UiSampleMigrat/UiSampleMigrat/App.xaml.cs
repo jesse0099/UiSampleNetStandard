@@ -22,6 +22,7 @@ namespace UiSampleMigrat
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDQ1OTEyQDMxMzkyZTMxMmUzMGFYUVRyaFV6U1kwWFc4QUhIbWNCOEsxRkpOSjhVSHhsa3dtWDhodDhpY3c9");
             //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ1Njk0QDMxMzcyZTMyMmUzMFFRVk1DcmZkQkFueWtkTUpxaDczRG04cDEzYlkyMTZSZXhLR3B0WlQ1N2s9");
+            //Settings.AppSettingsClear();
             InitializeComponent();
             #if DEBUG
             HotReloader.Current.Run(this);
@@ -48,6 +49,7 @@ namespace UiSampleMigrat
         protected override void OnStart()
         {
             // Handle when your app starts
+            //Testear el token para comprobar su validez
             if (Settings.IsRemembered & !Settings.SerializedToken.Equals(string.Empty))
                 MainPage = new RootHomePage();
             //var config = new Realms.RealmConfiguration("default.realm");
