@@ -16,9 +16,11 @@ namespace UiSampleMigrat.ViewModels
         public RootExplorePageViewModel rootViewModel { get; set; }
         public UpdateProfileViewModel UpdateProfile { get; set; }
         public TestPageViewModel Test { get; set; }
+        public ProfileViewModel Profile { get; set; }
 
         public MainViewModel() {
 
+            this.Profile = new ProfileViewModel();
             this.UpdateProfile = new UpdateProfileViewModel();
             this.Inventario = new InventarioPageViewModel();
             this.RootExplorer = new RootExplorePageViewModel();

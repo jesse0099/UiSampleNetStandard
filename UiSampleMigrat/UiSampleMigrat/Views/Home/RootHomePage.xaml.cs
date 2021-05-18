@@ -35,6 +35,9 @@ namespace UiSampleMigrat.Views.Home
             this.SelectedTabColor = Color.White;
             this.UnselectedTabColor = Color.White;
 
+            MessagingCenter.Subscribe<TestPageViewModel>(this,"toggleDrawer",(a)=> {
+                naviDrawer.ToggleDrawer();
+            });
 
             //LecturaMensajes
             MessagingCenter.Subscribe<RootExplorePageViewModel>(this, "Goto", (a) => {
@@ -92,10 +95,6 @@ namespace UiSampleMigrat.Views.Home
                 };
                 await PopupNavigation.Instance.PushAsync(popupProperties);
             }
-        }
-        private void BtnHamb_Clicked(object sender, EventArgs e)
-        {
-            naviDrawer.ToggleDrawer();
         }
 
         protected override bool OnBackButtonPressed()

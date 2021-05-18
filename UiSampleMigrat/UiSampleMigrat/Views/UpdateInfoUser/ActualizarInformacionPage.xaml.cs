@@ -64,19 +64,20 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
         }
 
         private async Task<bool> ChangeProfileImage() {
-            await CrossMedia.Current.Initialize();
-            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported )
+            var init = await CrossMedia.Current.Initialize();
+            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported && !init)
             {
                 return false;
             }
             else
             {
                 Bussy(true);
-                await Task.Delay(1000);
+                //await Task.Delay(1000);
                 var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
                 {
                     Directory = "Images",
-                    Name = DateTime.Now.ToString() + "_new.jpg"
+                    Name = DateTime.Now.ToString() + "_new.jpg",
+                    CompressionQuality = 80
                 });
                 if (file == null)
                 {
@@ -84,6 +85,7 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
                     return false;
                 }
 
+                
                 UpdateProfileViewModel.GetInstance().Profile.ProfileImage = ImageSource.FromStream(() =>
                 {
                     var stream = file.GetStream();

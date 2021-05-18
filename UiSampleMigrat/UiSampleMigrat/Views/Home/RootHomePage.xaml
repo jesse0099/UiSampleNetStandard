@@ -23,102 +23,143 @@
                 <viewmodels:TestPageViewModel x:Key="TestVm"></viewmodels:TestPageViewModel>
             </ResourceDictionary>
         </ContentPage.Resources>
-        <navigationdrawer:SfNavigationDrawer x:Name="naviDrawer"
-                                             DrawerWidth="200"
-                                            >
-            <!-- Contenido de fondo del Navigation Drawer-->
-            <navigationdrawer:SfNavigationDrawer.ContentView>
-                <Grid x:Name="mainView">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <StackLayout BackgroundColor="#1aa1d6">
+        <ScrollView BindingContext="{Binding Main, Source={StaticResource Locator}}">
+            <navigationdrawer:SfNavigationDrawer x:Name="naviDrawer">
 
-                    </StackLayout>
-                    <Button x:Name="btnHamb"
-                            ImageSource="icon.png"
-                            HeightRequest="50"
-                            WidthRequest="50"
-                            HorizontalOptions="Start"
-                            FontSize="20"
-                            BackgroundColor="#1aa1d6"
-                            Clicked="BtnHamb_Clicked">
+                <!-- Contenido de fondo del Navigation Drawer-->
+                <navigationdrawer:SfNavigationDrawer.ContentView>
+                    <Grid x:Name="mainView" BindingContext="{Binding Test}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackLayout BackgroundColor="#1aa1d6">
 
-                    </Button>
-                    <Label x:Name="lblhambHeader"
-                           HeightRequest="50"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           FontSize="14"
-                           Text="Hamb"
-                           TextColor="White"
-                           BackgroundColor="#1aa1d6">
+                        </StackLayout>
+                        <Button x:Name="btnHamb"
+                                ImageSource="icon.png"
+                                HeightRequest="50"
+                                WidthRequest="50"
+                                HorizontalOptions="Start"
+                                FontSize="20"
+                                BackgroundColor="#1aa1d6"
+                                Command="{Binding SlideCommand}"
+                                >
+                                <!--BindingContext="{Binding Test}"-->
+                                <!--Command="{Binding SlideCommand}">-->
 
-                    </Label>
-                    <Label Grid.Row="1"
-                           x:Name="lblContent"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center"
-                           Text="Content View"
-                           FontSize="14"
-                           TextColor="Black">
+                        </Button>
+                        <Label x:Name="lblhambHeader"
+                               HeightRequest="50"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               Text="SlidePanel"
+                               TextColor="White"
+                               BackgroundColor="#1aa1d6">
 
-                    </Label>
-                </Grid>
-            </navigationdrawer:SfNavigationDrawer.ContentView>
-            <!--Cabecera del slide panel -->
-            <navigationdrawer:SfNavigationDrawer.DrawerHeaderView>
-                <Grid BackgroundColor="#1aa1d6">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="120"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Image HeightRequest="110"
-                           Margin="0,10,0,0"
-                           BackgroundColor="#1aad6"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center"/>
-                    <Label Grid.Row="1"
-                           Text="Gc test"
-                           FontSize="20"
-                           TextColor="White"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center">
+                        </Label>
+                        <Label Grid.Row="1"
+                               x:Name="lblContent"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Text="{Binding ContentText}"
+                               FontSize="14"
+                               TextColor="Black">
+                            <!--BindingContext="{Binding Test}"-->
+                        </Label>
+                    </Grid>
+                </navigationdrawer:SfNavigationDrawer.ContentView>
+                <!--Drawer Default-->
+                <navigationdrawer:SfNavigationDrawer.DefaultDrawerSettings>
 
-                    </Label>
-                </Grid>
-            </navigationdrawer:SfNavigationDrawer.DrawerHeaderView>
-            <!--Contenido del slide panel-->
-            <navigationdrawer:SfNavigationDrawer.DrawerContentView>
+                    <navigationdrawer:DrawerSettings EnableSwipeGesture="False" 
+                                                     DrawerHeight="290"                                                    
+                                                     DrawerHeaderHeight="110"
+                                                     Position="Bottom"
+                                                     ContentBackgroundColor="Transparent"
+                                                     Transition="SlideOnTop">
+                        <!--Cabecera del slide panel default-->
+                        <navigationdrawer:DrawerSettings.DrawerHeaderView>
+                            <StackLayout BackgroundColor="Transparent"  BindingContext="{Binding Profile}" Padding="0" Margin="0">
+                                <Frame  CornerRadius="10"
+                                        Grid.Row="0"
+                                        Padding="0"
+                                        HasShadow="True">
+                                    <Frame CornerRadius="50"
+                                       Margin="4,4,4,4"
+                                       HorizontalOptions="Center"
+                                       IsClippedToBounds="True"
+                                       Padding="0"
+                                       BackgroundColor="Black"
+                                       HeightRequest="100"
+                                       WidthRequest="100">
+                                        <Image   Source="{Binding MyClient.ProfileImage}"
+                                                     Aspect="Fill"/>
+                                    </Frame>
+                                </Frame>
+                            </StackLayout>
+                        </navigationdrawer:DrawerSettings.DrawerHeaderView>
+                        <!--Contenido del slide panel default-->
+                        <navigationdrawer:DrawerSettings.DrawerContentView>
+                            <ListView BindingContext="{Binding Test}"
+                                      ItemsSource="{Binding LstOpt,Mode=TwoWay}" 
+                                      HasUnevenRows="True" 
+                                      BackgroundColor="White"
+                                      SelectedItem="{Binding SelectedOpt}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="1,1,1,1">
 
-                <ListView BindingContext="{StaticResource TestVm}" ItemsSource="{Binding LstOpt,Mode=TwoWay}" HasUnevenRows="True" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                            <StackLayout HeightRequest="40" Margin="1,1,1,1">
-   
-                                    <Label Margin="10,7,0,0"
-                                           FontSize="16"
-                                           TextColor="Black"
-                                           Text="{Binding .}">
+                                                <Label Margin="10,7,0,0"
+                                                           FontSize="16"
+                                                           TextColor="Black"
+                                                           Text="{Binding .}">
 
-                                    </Label>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                                </Label>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </navigationdrawer:DrawerSettings.DrawerContentView>
+                    </navigationdrawer:DrawerSettings>
+                    
+                </navigationdrawer:SfNavigationDrawer.DefaultDrawerSettings>
+                <navigationdrawer:SfNavigationDrawer.SecondaryDrawerSettings>
+                    <navigationdrawer:DrawerSettings Position="Left"
+                                                     TouchThreshold="70"
+                                                     DrawerHeaderHeight="0"
+                                                     Transition="Push"
+                                                     EnableSwipeGesture="True">
+                        <navigationdrawer:DrawerSettings.DrawerContentView>
+                            <ListView BindingContext="{Binding Test}" 
+                                      ItemsSource="{Binding LstOpt,Mode=TwoWay}" 
+                                      HasUnevenRows="True" 
+                                      BackgroundColor="White"
+                                      SelectedItem="{Binding SelectedOpt}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="1,1,1,1">
 
+                                                <Label Margin="10,7,0,0"
+                                                           FontSize="16"
+                                                           TextColor="Black"
+                                                           Text="{Binding .}">
 
-                <!--<Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Text="Test"></Label>
-                </Grid>-->
-            </navigationdrawer:SfNavigationDrawer.DrawerContentView>
-        </navigationdrawer:SfNavigationDrawer>
+                                                </Label>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </navigationdrawer:DrawerSettings.DrawerContentView>
+                    </navigationdrawer:DrawerSettings>
+                </navigationdrawer:SfNavigationDrawer.SecondaryDrawerSettings>
+            </navigationdrawer:SfNavigationDrawer>
+        </ScrollView>
     </ContentPage>
     <ContentPage Title="Perfil" x:Name="cpProfile" IconImageSource="user96.png" Visual="Material">
         <ContentPage.BindingContext>
