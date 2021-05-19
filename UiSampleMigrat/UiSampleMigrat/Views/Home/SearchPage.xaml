@@ -53,9 +53,9 @@
                 </SearchBar>
             </Frame>
             <ListView x:Name="lstCats" BackgroundColor="White" SelectionMode="Single"  ItemTemplate="{StaticResource ListViewCategoriesTemplate}"
-                  ItemsSource="{Binding CategoriasList,Mode=TwoWay}" 
-                  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"
-                  SelectedItem="{Binding CategoriaSeleccionada ,Mode=TwoWay}"
+                      ItemsSource="{Binding CategoriasList,Mode=TwoWay}" 
+                      VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"
+                      SelectedItem="{Binding CategoriaSeleccionada ,Mode=TwoWay}"
                       HasUnevenRows="True">
             </ListView>
         </StackLayout>

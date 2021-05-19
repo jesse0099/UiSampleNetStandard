@@ -2,100 +2,90 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModel="clr-namespace:UiSampleMigrat.ViewModels"
              xmlns:i18n="clr-namespace:UiSampleMigrat.Helpers"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
              x:Class="UiSampleMigrat.Views.Logins.PaginaGeraldLogin"
-             NavigationPage.HasNavigationBar="false"
              x:Name="PaginaLogin"
-             xmlns:local="clr-namespace:UiSampleMigrat.Controls"
+             NavigationPage.HasNavigationBar="false"
+             BackgroundImageSource="bckLogin.jpg"
              BindingContext="{Binding Main ,Source={StaticResource Locator}}">
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="10,20,10,5"  BackgroundColor="#0D0937"
-                     BindingContext="{Binding Login}">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
-                </StackLayout.GestureRecognizers>
-                <ActivityIndicator
-                    IsRunning="{Binding IsBusy}"
-                    IsVisible="{Binding IsBusy}"
-                    Color="WhiteSmoke"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"></ActivityIndicator>
-                <local:ImageEntry
-                    LineColor="White" IsVisible="False"></local:ImageEntry>
-                <Image Source="userF">
-                </Image>
+        <ScrollView VerticalScrollBarVisibility="Always">
+            <Grid VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <StackLayout VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand"
+                             BindingContext="{Binding Login}"
+                             Grid.Row="1">
 
-                <Grid  >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-
-
-                    <Frame
-                    BackgroundColor="Transparent" OutlineColor="Gray" Opacity="0.7" Padding="1" Margin="10"
-                 Grid.Row="0"
-                    CornerRadius="10">
-                        <Entry
-                    Text="{Binding UserLoguin.userName,Mode=TwoWay}"
-                    x:Name="txtUser"
-                    Margin="10"
-                    Keyboard="Email"
-                    TextColor="White"
-                    Placeholder="{i18n:Translate emailPH}"
-                    PlaceholderColor="White">
-                        </Entry>
-                    </Frame>
-                    <Frame
-                    BackgroundColor="Transparent" 
-                    OutlineColor="Gray"
-                    Opacity="0.7" 
-                    Padding="1" 
-                         Grid.Row="1"
-                    Margin="10"
-                    CornerRadius="10">
-                        <Entry
-                    Text="{Binding UserLoguin.password,Mode=TwoWay}"
-                    PlaceholderColor="White"
-                    Margin="10"
-                    TextColor="White"
-                    x:Name="txtPassword"
-                    IsPassword="True"
-                    Placeholder="{i18n:Translate passwordPH}" ></Entry>
-                    </Frame>
-
-
-                </Grid>
-                <Grid>
-                    <Label Text="{i18n:Translate RememberMe}" TextColor="White" Grid.Row="0"
-                       Grid.Column="2"></Label>
-                    <Switch IsToggled="{Binding RememberMe,Mode=TwoWay}"
-                        OnColor="SkyBlue"
-                        IsEnabled="{Binding IsEnabled}"
-                        ThumbColor="WhiteSmoke"
+                    <ActivityIndicator 
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        Color="#474787"
                         HorizontalOptions="Center"
-                        VerticalOptions="CenterAndExpand" 
-                        Grid.Row="0"
-                        Grid.Column="3"/>
+                        VerticalOptions="Center"/>
+                    <Frame HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           HasShadow="True"
+                           WidthRequest="300"
+                           CornerRadius="10">
+                        <StackLayout>
+                            <inputLayout:SfTextInputLayout Hint="{i18n:Translate emailPH}"
+                                                           InputViewPadding="5"
+                                                           HelperText="Usuario Registrado"
+                                                           ContainerType="Outlined"
+                                                           UnfocusedColor="#2c2c54"
+                                                           FocusedColor="#474787"
+                                                           OutlineCornerRadius="8">
+                                <Entry      x:Name="txtUser"
+                                        Text="{Binding UserLoguin.userName,Mode=TwoWay}"
+                                        Keyboard="Email"
+                                        TextColor="Black">
+                                </Entry>
+                            </inputLayout:SfTextInputLayout>
 
-                </Grid>
+                            <inputLayout:SfTextInputLayout  Hint="{i18n:Translate passwordPH}"
+                                                        EnablePasswordVisibilityToggle="True"
+                                                        ContainerType="Outlined"
+                                                        InputViewPadding="5"
+                                                        UnfocusedColor="#2c2c54"
+                                                        FocusedColor="#474787"
+                                                        OutlineCornerRadius="8">
+                                <Entry  x:Name="txtPassword"
+                                    IsPassword="True"
+                                    Text="{Binding UserLoguin.password,Mode=TwoWay}"
+                                    TextColor="Black"/>
+                            </inputLayout:SfTextInputLayout>
 
-                <Button
-                  IsEnabled="{Binding IsEnabled}"
-                  Command = "{Binding LoginCommand}"
-                  Margin="20"
-                  BackgroundColor="#3699DE"
-                  BorderRadius="23"
-                  Text="{i18n:Translate LogIn}"
-                  TextColor="White">
-                </Button>
-            </StackLayout>
+                            <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="Start">
+                                <Label  Text="{i18n:Translate RememberMe}"
+                                    TextColor="#2c2c54"
+                                    FlowDirection="LeftToRight"/>
+
+                                <Switch IsToggled="{Binding RememberMe,Mode=TwoWay}"
+                                    OnColor="#474787"
+                                    IsEnabled="{Binding IsEnabled}"
+                                    ThumbColor="WhiteSmoke"/>
+                            </StackLayout>
+
+                            <Button   IsEnabled="{Binding IsEnabled}"
+                                  Command = "{Binding LoginCommand}"
+                                  BackgroundColor="#3699DE"
+                                  BorderRadius="23"
+                                  Text="{i18n:Translate LogIn}"
+                                  TextColor="White"
+                                  HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </Frame>
+
+                </StackLayout>
+            </Grid>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

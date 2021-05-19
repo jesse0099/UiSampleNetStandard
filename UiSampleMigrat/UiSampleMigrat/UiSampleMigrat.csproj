@@ -17,6 +17,7 @@
     <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="SuaveControls.FloatingActionButton" Version="2018.1.5" />
+    <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfNavigationDrawer" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRadialMenu" Version="19.1.0.54" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="4.0.0.190-beta" />
