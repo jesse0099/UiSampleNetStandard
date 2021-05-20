@@ -17,6 +17,7 @@
     <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="SuaveControls.FloatingActionButton" Version="2018.1.5" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfNavigationDrawer" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRadialMenu" Version="19.1.0.54" />
@@ -30,7 +31,7 @@
 
   <ItemGroup>
     <Reference Include="Mono.Android">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
 

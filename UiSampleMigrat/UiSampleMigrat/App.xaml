@@ -15,7 +15,10 @@
             <Color x:Key="BodyTextColor">#C3C3C3</Color>
             <Color x:Key="ButtonBackgroundColor">#3699de</Color>
             <Color x:Key="BackgroundColor">White</Color>
-
+            <Color x:Key="LuckyPoint">#2c2c54</Color>
+            <Color x:Key="Liberty">#474787</Color>
+            <Color x:Key="JacksonPurple">#40407a</Color>
+            
             <!--  font families  -->
             <OnPlatform x:Key="RegularFontFamily" x:TypeArguments="x:String">
                 <On Platform="iOS">HelveticaNeue</On>
