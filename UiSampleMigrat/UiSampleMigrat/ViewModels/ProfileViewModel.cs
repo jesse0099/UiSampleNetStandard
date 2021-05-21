@@ -61,26 +61,14 @@ namespace UiSampleMigrat.ViewModels
 
             try
             {
+                MyClient = new ClientProfile();
                 //Obtencion de datos del perfil 
-                ApiPlainClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
+                ClientProfile profileInf = LoginViewModel.GetInstance().ClientProfile;
                 if (profileInf != null)
                 {
-                    LocalCharge = Convert.FromBase64String(Convert.ToString(profileInf.PP));
-                    ImageSource profileImage;
-                    profileImage = FromBytesToImageSource(LocalCharge);
 
 
-
-                    MyClient = new ClientProfile()
-                    {
-                        ProfileImage = profileImage,
-                        Apellido = profileInf.Apellido,
-                        PrimerNombre = profileInf.PrimerNombre,
-                        SegundoNombre = profileInf.SegundoNombre,
-                        SegundoApellido = profileInf.SegundoApellido,
-                        Email = profileInf.Email,
-                        Afiliado = profileInf.Afiliado
-                    };
+                    MyClient = profileInf;
 
                     this.NombreApellido = $"{MyClient.PrimerNombre} {MyClient.Apellido}";
 
@@ -119,7 +107,7 @@ namespace UiSampleMigrat.ViewModels
                 UpdateProfileViewModel.GetInstance().Nombres = $"{MyClient.PrimerNombre} {MyClient.SegundoNombre}";
                 UpdateProfileViewModel.GetInstance().Apellidos = $"{MyClient.Apellido} {MyClient.SegundoApellido}";
                 UpdateProfileViewModel.GetInstance().Profile.Email = $"{MyClient.Email}";
-                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = FromBytesToImageSource(LocalCharge);
+                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = MyClient.ProfileImage;
 
             }
             catch (InvalidOperationException) {
