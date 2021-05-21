@@ -136,7 +136,7 @@ namespace UiSampleMigrat.ViewModels
             });
 
             service = new RestServiceConsumer();
-            var connection = await service.CheckConnection();
+            var connection = service.CheckConnection();
             if (!connection.IsSuccesFull) {
                 //Conexion no establecida
                 Device.BeginInvokeOnMainThread(()=> {

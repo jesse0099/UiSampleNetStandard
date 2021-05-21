@@ -1,47 +1,30 @@
 ﻿using Newtonsoft.Json;
-using Plugin.Connectivity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using UiSampleMigrat.Models;
+using Xamarin.Essentials;
 
 namespace UiSampleMigrat.Services
 {
     public class RestServiceConsumer
     {
         /*Metodo para chequear la conexion*/
-        public async Task<Response> CheckConnection()
+        public Response CheckConnection()
         {
-            if (!CrossConnectivity.Current.IsConnected)
-            {
-                return new Response()
-                {
-                    IsSuccesFull = false,
-                    Message = "Sin conexión a internet",
-                };
+            Response returned = new Response();
+            returned.IsSuccesFull = false;
+            returned.Message = "Conexion No Disponible";
+            var current = Connectivity.NetworkAccess;
+            if (current == NetworkAccess.Internet) {
+                //Conexion a internet disponible -Acceso al servicio no garantizado-
+                returned.IsSuccesFull = true;
+                returned.Message = "Conexion Disponible";
+                return returned;
             }
-
-
-            var isReachable = await CrossConnectivity.Current.IsRemoteReachable("https://www.youtube.com");
-            if (!isReachable)
-            {
-                return new Response()
-                {
-                    IsSuccesFull = false,
-                    Message = "Sin conexión a internet",
-                };
-            }
-
-            return new Response()
-            {
-                IsSuccesFull = true,
-                Message = "Conexión Correcta"
-            };
-
+            return returned;
         }
 
         /*Metodo generico para consumir verbos GET*/

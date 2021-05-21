@@ -2,7 +2,8 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:infra="clr-namespace:UiSampleMigrat.Infraestructure"
-             xmlns:log="clr-namespace:UiSampleMigrat.ViewModels"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              x:Class="UiSampleMigrat.App">
     <Application.Resources>
         <!--  Application resource dictionary  -->
@@ -18,6 +19,7 @@
             <Color x:Key="LuckyPoint">#2c2c54</Color>
             <Color x:Key="Liberty">#474787</Color>
             <Color x:Key="JacksonPurple">#40407a</Color>
+            <Color x:Key="SynthPumpkin">#ff793f</Color>
             
             <!--  font families  -->
             <OnPlatform x:Key="RegularFontFamily" x:TypeArguments="x:String">
@@ -47,14 +49,25 @@
                 <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
-
+            <!--Entries con Syncfusion-->
+            <Style x:Key="SyncfusionEntries" TargetType="inputLayout:SfTextInputLayout">
+                <Setter Property="InputViewPadding" Value="5"/>
+                <Setter Property="UnfocusedColor" Value="{StaticResource LuckyPoint}"/>
+                <Setter Property="FocusedColor" Value="{StaticResource Liberty}"/>
+                <Setter Property="OutlineCornerRadius" Value="8"/>
+            </Style>
+            <!--Buttons con syncfusion-->
+            <Style x:Key="SyncfusionButtons" TargetType="buttons:SfButton">
+                <Setter Property="CornerRadius" Value="3"/>
+                <Setter Property="TextColor" Value="WhiteSmoke"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource JacksonPurple}"/>
+            </Style>
             <Style x:Key="ProfileTagLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource TagTextFontSize}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
-
             <Style x:Key="StatsNumberLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderTextColor}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -67,7 +80,6 @@
                 <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource StatsNumberFontSize}" />
             </Style>
-
             <Style x:Key="StatsCaptionLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="Margin" Value="0,-5,0,0" />
@@ -75,22 +87,18 @@
                 <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource StatsCaptionFontSize}" />
             </Style>
-
-
             <Style x:Key="ValueLabel" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" /> 
+                <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="HorizontalTextAlignment" Value="Start" />
                 <Setter Property="FontFamily" Value="{StaticResource LightFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource StatsCaptionFontSize}" />
             </Style>
-
             <Style x:Key="MainBodyLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource BodyTextColor}" />
                 <Setter Property="FontFamily" Value="{StaticResource RegularFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource BodyFontSize}" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
-
             <Style x:Key="FollowButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
                 <Setter Property="TextColor" Value="White" />

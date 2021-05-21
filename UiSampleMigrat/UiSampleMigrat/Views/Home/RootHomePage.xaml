@@ -9,7 +9,7 @@
             BarBackgroundColor="#0d0937"
             BarTextColor="White"
             SelectedTabColor="#828282"
-            SelectedItem="1">
+            SelectedItem="3">
     
     <homeviews:TestPage Title="Test" Visual="Material" IconImageSource="user96.png"/>
 

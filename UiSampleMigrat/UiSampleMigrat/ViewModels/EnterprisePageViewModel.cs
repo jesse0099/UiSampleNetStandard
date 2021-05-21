@@ -125,7 +125,7 @@ namespace UiSampleMigrat.ViewModels
             });
 
             //Sin conexion
-            var connection =  await proc.CheckConnection();
+            var connection =  proc.CheckConnection();
             if (!connection.IsSuccesFull) {
                 Device.BeginInvokeOnMainThread(() => {
                     this.IsRefreshing = false;

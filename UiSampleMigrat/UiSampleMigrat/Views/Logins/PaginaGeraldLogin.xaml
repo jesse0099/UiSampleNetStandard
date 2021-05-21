@@ -5,8 +5,10 @@
              xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:i18n="clr-namespace:UiSampleMigrat.Helpers"
-             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms" 
+             xmlns:imageEntry="clr-namespace:UiSampleMigrat.Controls"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
              NavigationPage.HasNavigationBar="false"
              BackgroundImageSource="bckLogin.jpg"
              BindingContext="{Binding Main ,Source={StaticResource Locator}}">
@@ -24,12 +26,16 @@
                              BindingContext="{Binding Login}"
                              Grid.Row="1">
 
-                    <ActivityIndicator 
-                        IsRunning="{Binding IsBusy}"
+                    <busyindicator:SfBusyIndicator 
+                        IsBusy="{Binding IsBusy}"
+                        AnimationType="SingleCircle"
+                        FontAttributes="Bold"
+                        Title="Loading..."
+                        TextColor="{StaticResource LuckyPoint}"
                         IsVisible="{Binding IsBusy}"
-                        Color="#474787"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"/>
+                    <imageEntry:ImageEntry LineColor="{StaticResource LuckyPoint}" IsVisible="False"/>
                     <Frame HorizontalOptions="Center"
                            VerticalOptions="Center"
                            HasShadow="True"
@@ -40,10 +46,8 @@
                                                            InputViewPadding="5"
                                                            HelperText="Usuario Registrado"
                                                            ContainerType="Outlined"
-                                                           UnfocusedColor="#2c2c54"
-                                                           FocusedColor="#474787"
-                                                           OutlineCornerRadius="8">
-                                <Entry      x:Name="txtUser"
+                                                           Style="{StaticResource SyncfusionEntries}">
+                                <Entry  x:Name="txtUser"
                                         Text="{Binding UserLoguin.userName,Mode=TwoWay}"
                                         Keyboard="Email"
                                         TextColor="Black">
@@ -53,10 +57,7 @@
                             <inputLayout:SfTextInputLayout  Hint="{i18n:Translate passwordPH}"
                                                         EnablePasswordVisibilityToggle="True"
                                                         ContainerType="Outlined"
-                                                        InputViewPadding="5"
-                                                        UnfocusedColor="#2c2c54"
-                                                        FocusedColor="#474787"
-                                                        OutlineCornerRadius="8">
+                                                        Style="{StaticResource SyncfusionEntries}">
                                 <Entry  x:Name="txtPassword"
                                     IsPassword="True"
                                     Text="{Binding UserLoguin.password,Mode=TwoWay}"
@@ -77,12 +78,10 @@
 
                             <buttons:SfButton  IsEnabled ="{Binding IsEnabled}"
                                                Command="{Binding LoginCommand}"
-                                               CornerRadius="3"
                                                Text="{i18n:Translate LogIn}"
-                                               TextColor="WhiteSmoke"
-                                               BackgroundColor="{StaticResource JacksonPurple}"
                                                HorizontalOptions="End"
-                                               ShowIcon="True">
+                                               ShowIcon="True"
+                                               Style="{StaticResource SyncfusionButtons}">
                                 <buttons:SfButton.Image>
                                     <Image Source="iconsdoor.png" HeightRequest="16" WidthRequest="16"/>
                                 </buttons:SfButton.Image>

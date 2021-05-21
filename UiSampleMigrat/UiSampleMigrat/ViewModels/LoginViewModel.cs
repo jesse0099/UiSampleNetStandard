@@ -45,14 +45,7 @@ namespace UiSampleMigrat.ViewModels
             }
         }
 
-        private ApiPlainClientProfile _clientProfile;
-
-        public ApiPlainClientProfile ClientProfile
-        {
-            get { return _clientProfile; }
-            set { _clientProfile = value; }
-        }
-
+        public ApiPlainClientProfile ClientProfile { get; set; }
 
         private RestServiceConsumer proc;
 
@@ -67,6 +60,7 @@ namespace UiSampleMigrat.ViewModels
                 onPropertyChanged();
             }
         }
+
         private ICommand _loginCommand;
 
         public ICommand LoginCommand
@@ -90,8 +84,6 @@ namespace UiSampleMigrat.ViewModels
                 onPropertyChanged();
             }
         }
-
-
         #endregion
 
 
@@ -102,6 +94,7 @@ namespace UiSampleMigrat.ViewModels
             this.IsBusy = false;
             this.UserLoguin = new Login();
             LoginCommand = new Command(LoginCommandExecute);
+            proc = new RestServiceConsumer();
             _instance = this;
         }
         #endregion
@@ -109,118 +102,140 @@ namespace UiSampleMigrat.ViewModels
         #region Metodos  y eventos
         public async void LoginCommandExecute()
         {
-            await Device.InvokeOnMainThreadAsync(() => {
-                this.IsBusy = true;
-                this.IsEnabled = false;
-            });
-            /*Logueandome y obteniendo un token*/
-            if (userLogin.password != null && userLogin.userName != null)
-            {
-                proc = new RestServiceConsumer();
-                var controllerString = $"{Constantes.LOGINAUTH}{Constantes.LOGINAUTHUSERPAR}={userLogin.userName}&{Constantes.LOGINAUTHPASSPAR}={userLogin.password}";
-                var response = await proc.Get<string>(Constantes.BASEURL, Constantes.LOGINPREFIX, controllerString);
+            //Notificacion de ocupado (Bussy indicator activo)
+            EnablingVarsOnMainThread(false,true);
 
-                if (!response.IsSuccesFull)
+            proc = new RestServiceConsumer();
+            //Revisar conexion a internet
+            if (proc.CheckConnection().IsSuccesFull) {
+                try
                 {
-                    //Errores en la respuesta
-                    if (response.Result == null)
+                    //Intento de login
+                    if (userLogin.password != null && userLogin.userName != null)
                     {
-                        await Device.InvokeOnMainThreadAsync(() => {
-                            this.IsBusy = false;
-                            this.IsEnabled = true;
-                        });
-                        await Application.Current.MainPage.DisplayAlert("Error!", "Credenciales incorrectas", "OK");
-                        return;
+                        var controllerString = $"{Constantes.LOGINAUTH}{Constantes.LOGINAUTHUSERPAR}={userLogin.userName}&{Constantes.LOGINAUTHPASSPAR}={userLogin.password}";
+                        var response = await proc.Get<string>(Constantes.BASEURL, Constantes.LOGINPREFIX, controllerString);
+
+                        if (!response.IsSuccesFull)
+                        {
+                            if (response.Result == null)
+                            {
+                                //Credenciales incorrectas - Fallo en el Login
+                                EnablingVarsOnMainThread(true, false);
+                                await Application.Current.MainPage.DisplayAlert("Error!", "Credenciales Incorrectas", "OK");
+                                return;
+                            }
+                        }
+
+                        //Token y valor de Recuerdo
+                        Settings.SerializedToken = Convert.ToString(response.Result);
+                        Settings.IsRemembered = RememberMe;
+
+                        //Informacion de perfil
+                        var profileResponse = await ProfileInfo();
+                        if (!profileResponse.IsSuccesFull)
+                        {
+                            EnablingVarsOnMainThread(true,false);
+                            await Application.Current.MainPage.DisplayAlert("Error!", profileResponse.Message, "OK");
+                            return;
+                        }
+
+                        ApiPlainClientProfile profileInfo = (ApiPlainClientProfile)profileResponse.Result;
+                        this.ClientProfile = profileInfo;
+
+
+
+                        #region Carga de datos a otros ViewModels
+                        var profileImageBytes = Convert.FromBase64String(profileInfo.PP.ToString());
+                        ImageSource profileImage;
+                        if (profileImageBytes.Length != 0)
+                            profileImage = ImageSource.FromStream(() => new MemoryStream(profileImageBytes));
+                        else
+                            profileImage = ImageSource.FromFile("userF.png");
+                        #endregion
+
+                        //Control de recuerdos
+                        if (Settings.IsRemembered)
+                        {
+                            //Cargar perfil a BD local
+                            var r = Realm.GetInstance();
+                            try
+                            {
+                                r.Write(() => {
+                                    r.Add(new RmbClientProfile()
+                                    {
+                                        ID = profileInfo.ID,
+                                        ProfilePhoto = profileImageBytes,
+                                        Afiliado = profileInfo.Afiliado,
+                                        Apellido = profileInfo.Apellido,
+                                        SegundoApellido = profileInfo.SegundoApellido,
+                                        Email = profileInfo.Email,
+                                        PrimerNombre = profileInfo.PrimerNombre,
+                                        SegundoNombre = profileInfo.SegundoNombre,
+                                    });
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                UpdateProfileViewModel.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                                    ex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+                            }
+                        }
+
+                        //Settings
+                        Settings.FullName = $"{profileInfo.PrimerNombre} {profileInfo.SegundoNombre} {profileInfo.Apellido} {profileInfo.SegundoApellido}";
+                        Settings.ClientUID = profileInfo.ID;
+                        Settings.SuccesfullPassword = userLogin.password;
+
+                        EnablingVarsOnMainThread(true,false);
+                        
+                        Application.Current.MainPage = new RootHomePage();
+
                     }
-                    //Manejo de otros errores
-                    await Device.InvokeOnMainThreadAsync(() => {
-                        this.IsBusy = false;
-                        this.IsEnabled = true;
-                    });
-                    await Application.Current.MainPage.DisplayAlert("Error!", response.Message, "OK");
-                    return;
+                    else {
+                        EnablingVarsOnMainThread(true, false);
+                        await Application.Current.MainPage.DisplayAlert("Error!", "Todos los datos son obligatorios", "OK");
+                    }
                 }
-                //Settings
-                Settings.SerializedToken = Convert.ToString(response.Result);
-                Settings.IsRemembered = RememberMe;
+                catch (Exception ex) { 
+                    //Error de servicio no disponible  y otros 
+                     EnablingVarsOnMainThread(true, false);
+                     await Application.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
+                }
+            }
+            else {
+                //Error de conexion
+                EnablingVarsOnMainThread(true, false);
+                await Application.Current.MainPage.DisplayAlert("Error!", "Conexion A Internet No Disponible", "OK");
+            }
+        }
 
-
+        public async Task<Response> ProfileInfo() {
+            Response returned = new Response();
+            returned.IsSuccesFull = false;
+            returned.Message = "Conexion No disponible";
+            if (!proc.CheckConnection().IsSuccesFull)
+                return returned;
+            try
+            {
                 //Informacion de perfil
                 var profileControllerString = $"{Constantes.CLIENTPROFILE}{Constantes.LOGINAUTHUSERPAR}={userLogin.userName}&{Constantes.LOGINAUTHPASSPAR}={userLogin.password}";
-                var profileResponse = await proc.Get<ApiPlainClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, profileControllerString, Settings.SerializedToken);
-                if (!profileResponse.IsSuccesFull)
-                {
-                    await Device.InvokeOnMainThreadAsync(() => {
-                        this.IsBusy = false;
-                        this.IsEnabled = true;
-                    });
-                    await Application.Current.MainPage.DisplayAlert("Error!", response.Message, "OK");
-                    return;
-                }
-
-                ApiPlainClientProfile profileInfo = (ApiPlainClientProfile)profileResponse.Result;
-                this.ClientProfile = profileInfo;
-
-
-
-                #region Carga de datos a otros ViewModels
-                var profileImageBytes = Convert.FromBase64String(profileInfo.PP.ToString());
-                ImageSource profileImage;
-                if (profileImageBytes.Length != 0)
-                    profileImage = ImageSource.FromStream(() => new MemoryStream(profileImageBytes));
-                else
-                    profileImage = ImageSource.FromFile("userF.png");
-                #endregion
-
-                //Control de recuerdos
-                if (Settings.IsRemembered)
-                {
-                    //Cargar perfil a BD local
-                    var r = Realm.GetInstance();
-                    try {
-                        r.Write(() => {
-                            r.Add(new RmbClientProfile()
-                            {
-                                ID = profileInfo.ID,
-                                ProfilePhoto = profileImageBytes,
-                                Afiliado = profileInfo.Afiliado,
-                                Apellido = profileInfo.Apellido,
-                                SegundoApellido = profileInfo.SegundoApellido,
-                                Email = profileInfo.Email,
-                                PrimerNombre = profileInfo.PrimerNombre,
-                                SegundoNombre = profileInfo.SegundoNombre,
-                            });
-                        });
-                    }
-                    catch (Exception ex) {
-                        UpdateProfileViewModel.CustomizedToast(Android.Graphics.Color.White,Android.Graphics.Color.Black,
-                            ex.Message,ToastLength.Long, iconResource:"error64",textSize:16);
-                    }
-                }
-
-
-
-                //Settings
-                Settings.FullName = $"{profileInfo.PrimerNombre} {profileInfo.SegundoNombre} {profileInfo.Apellido} {profileInfo.SegundoApellido}";
-                Settings.ClientUID = profileInfo.ID;
-                Settings.SuccesfullPassword = userLogin.password;
-
-                await Device.InvokeOnMainThreadAsync(() => {
-                    this.IsBusy = false;
-                    this.IsEnabled = true;
-                });
-                //Navegacion a la pagina Root bloqueando el regreso al Login
-                Application.Current.MainPage = new RootHomePage();
-
+                returned = await proc.Get<ApiPlainClientProfile>(Constantes.BASEURL, Constantes.CLIENTPREFIX, profileControllerString, Settings.SerializedToken);
+                return returned;
             }
-            else
+            catch (Exception ex)
             {
-                await Device.InvokeOnMainThreadAsync(() => {
-                    this.IsBusy = false;
-                    this.IsEnabled = true;
-                });
-                await Application.Current.MainPage.DisplayAlert("Error!", "Todos los datos son obligatorios", "OK");
+                //Problemas de acceso al servicio
+                returned.Message = "Problemas De Acceso al Servicio";
+                return returned;
             }
+        }
+
+        private async void EnablingVarsOnMainThread(bool isenabled, bool isbusy) {
+            await Device.InvokeOnMainThreadAsync(() => {
+                IsBusy = isbusy;
+                IsEnabled = isenabled;
+            });
         }
         #endregion
 

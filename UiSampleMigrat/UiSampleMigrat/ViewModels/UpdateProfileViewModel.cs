@@ -140,7 +140,7 @@ namespace UiSampleMigrat.ViewModels
             SetActivity(true);
             //Conexion
             service  = new RestServiceConsumer();
-            var response = await service.CheckConnection();
+            var response = service.CheckConnection();
             if (!response.IsSuccesFull)
             {
                 SetActivity(false);
@@ -338,7 +338,7 @@ namespace UiSampleMigrat.ViewModels
         public static void CustomizedToast(Android.Graphics.Color textColor, Android.Graphics.Color backgroundColor, string message,ToastLength length=ToastLength.Long,
              string iconResource="Elec",float textSize=16,string resourceFolder="drawable") {
 
-             int resourceId = Android.App.Application.Context.Resources.GetIdentifier(iconResource, resourceFolder, Android.App.Application.Context.PackageName);
+            int resourceId = Android.App.Application.Context.Resources.GetIdentifier(iconResource, resourceFolder, Android.App.Application.Context.PackageName);
             var toast = Toast.MakeText(Android.App.Application.Context, message, length);
             var v = (Android.Views.ViewGroup)toast.View;
             if (v.ChildCount > 0 && v.GetChildAt(0) is TextView)
