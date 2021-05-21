@@ -50,6 +50,7 @@ namespace UiSampleMigrat
         {
             // Handle when your app starts
             //Testear el token para comprobar su validez
+            Settings.AppSettingsClear();
             if (Settings.IsRemembered & !Settings.SerializedToken.Equals(string.Empty))
                 MainPage = new RootHomePage();
             //var config = new Realms.RealmConfiguration("default.realm");

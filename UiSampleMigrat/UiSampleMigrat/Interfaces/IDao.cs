@@ -8,10 +8,10 @@ namespace UiSampleMigrat.Interfaces
 {
     public interface IDao<T>
     {
-      Task<T> Get();
+      Task<T> Get(T obj);
       Task<List<T>> GetList();
       Task<Response> Put(T obj);
-      Task<Response> Push(T obj);
+      Task<Response> Post(T obj);
       Task<Response> Delete(T obj);
       
     }

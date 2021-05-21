@@ -70,7 +70,7 @@
                                     TextColor="#2c2c54"
                                     FlowDirection="LeftToRight"/>
 
-                                <Switch IsToggled="{Binding RememberMe,Mode=TwoWay}"
+                                <Switch IsToggled="{Binding UserLoguin.RememberMe,Mode=TwoWay}"
                                     OnColor="#474787"
                                     IsEnabled="{Binding IsEnabled}"
                                     ThumbColor="WhiteSmoke"/>

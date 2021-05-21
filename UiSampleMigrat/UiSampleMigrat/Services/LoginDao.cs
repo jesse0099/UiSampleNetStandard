@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace UiSampleMigrat.Services
 {
-    public class LoginDao : BaseDao,IDao<Login>
+    public class LoginDao : BaseDao,IDao<Login>,ILocalDao<Login>
     {
 
         public LoginDao()
@@ -17,11 +17,14 @@ namespace UiSampleMigrat.Services
             
         }
 
-        public async Task<Response> Auth(Login obj) {
+        #region Metodos Locales
+        public async Task<Response> Auth(Login obj)
+        {
             if (!proc.CheckConnection().IsSuccesFull)
                 throw new ConnectionException("Sin Acceso a Internet");
-                
-            try {
+
+            try
+            {
                 if (obj.password == null || obj.userName == null)
                     throw new LoginException("Todos los datos son necesarios");
 
@@ -31,30 +34,33 @@ namespace UiSampleMigrat.Services
                 if (!response.IsSuccesFull)
                     throw new LoginException("Credenciales Incorrectas");
 
-                var tempToken = Convert.ToString(response.Result);
-                Settings.SerializedToken = tempToken;
-                Settings.IsRemembered = obj.RememberMe;
                 return response;
-            } catch (Exception ex) {
-                throw new LoginException(ex.Message,ex);
+            }
+            catch (Exception ex)
+            {
+                throw new LoginException(ex.Message, ex);
             }
 
         }
+        #endregion
 
-        public Task<Response> Delete(Login obj)
+        #region IDao<Login>
+         public Task<Response> Delete(Login obj)
         {
             throw new NotImplementedException();
         }
-        Task<Login> IDao<Login>.Get()
+
+        public Task<Login> Get(Login obj)
         {
             throw new NotImplementedException();
         }
+
         public Task<List<Login>> GetList()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Response> Push(Login obj)
+        public Task<Response> Post(Login obj)
         {
             throw new NotImplementedException();
         }
@@ -63,6 +69,37 @@ namespace UiSampleMigrat.Services
         {
             throw new NotImplementedException();
         }
+        #endregion
+
+        #region ILocalDao<Login>
+        public Task<Response> RealmDelete(Login obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Login> RealmGet(Login obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Login>> RealmGetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Response> RealmSave(Login obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Response> RealmUpdate(Login obj)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
 
     }
+
+
 }
