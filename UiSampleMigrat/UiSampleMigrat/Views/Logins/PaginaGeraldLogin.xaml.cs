@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UiSampleMigrat.Models;
 using UiSampleMigrat.Services;
-using UiSampleMigrat.Views.Home;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using SQLite;
-using UiSampleMigrat.Interfaces;
 
 
 namespace UiSampleMigrat.Views.Logins

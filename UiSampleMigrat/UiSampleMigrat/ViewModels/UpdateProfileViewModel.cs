@@ -209,8 +209,8 @@ namespace UiSampleMigrat.ViewModels
 
 
                 //Creacion del modelo a enviar
-                Stream streamedImage = GetImageSourceStream(this.Profile.ProfileImage);
-                this.ProfileImageBytes = StreamToByteArray(streamedImage);
+                Stream streamedImage = Commons.GetImageSourceStream(this.Profile.ProfileImage);
+                this.ProfileImageBytes = Commons.StreamToByteArray(streamedImage);
                 
 
                 var token = Settings.SerializedToken;
@@ -390,32 +390,6 @@ namespace UiSampleMigrat.ViewModels
                 return false;
             else
                 return true;
-        }
-
-        public static byte[] StreamToByteArray(Stream input) {
-            byte[] buffer = new byte[16*1024];
-            using (MemoryStream ms = new MemoryStream()) {
-                int read;
-                while ((read = input.Read(buffer,0,buffer.Length))>0) {
-                    ms.Write(buffer,0,read);
-                }
-                return ms.ToArray();
-            }
-        }
-
-        public static  Stream GetImageSourceStream(ImageSource imgSource) {
-            if (imgSource is StreamImageSource) {
-                try {
-                    StreamImageSource strImgSource = (StreamImageSource)imgSource;
-                    System.Threading.CancellationToken cToken = System.Threading.CancellationToken.None;
-                    Task <Stream> returned =  strImgSource.Stream(cToken);
-                    return returned.Result;
-                } catch (Exception ex) {
-                    Debug.WriteLine(ex.Message);
-                    return null;
-                }
-            }
-            return null;
         }
 
         private void EmptyStringInitializer() {

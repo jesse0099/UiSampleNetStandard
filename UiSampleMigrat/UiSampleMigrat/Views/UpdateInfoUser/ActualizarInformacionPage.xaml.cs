@@ -1,9 +1,6 @@
 ﻿using Android.Widget;
-using Plugin.Media;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UiSampleMigrat.Effects;
 using UiSampleMigrat.Models;
@@ -49,7 +46,7 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
                 var askStrgReadPermission =await  Permissions.RequestAsync<Permissions.StorageWrite>();
                 if (AndPermissionChecker(new List<PermissionStatus>() { askCamePermission, askStrgPermission, askStrgReadPermission }))
                 {
-                    await ChangeProfileImage();
+                    await TakePhotoAsync();
                 }
                 else
                 {
@@ -59,43 +56,7 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
             }
             else
             {
-                  await ChangeProfileImage();
-            }
-        }
-
-        private async Task<bool> ChangeProfileImage() {
-            var init = await CrossMedia.Current.Initialize();
-            if (!CrossMedia.Current.IsTakePhotoSupported && !CrossMedia.Current.IsPickPhotoSupported && !init)
-            {
-                return false;
-            }
-            else
-            {
-                Bussy(true);
-                //await Task.Delay(1000);
-                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
-                {
-                    Directory = "Images",
-                    Name = DateTime.Now.ToString() + "_new.jpg",
-                    CompressionQuality = 80
-                });
-                if (file == null)
-                {
-                    Bussy(false);
-                    return false;
-                }
-
-                
-                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = ImageSource.FromStream(() =>
-                {
-                    var stream = file.GetStream();
-                    return stream;
-                });
-
-                imgProfile.Source = UpdateProfileViewModel.GetInstance().Profile.ProfileImage;
-
-                Bussy(false);
-                return true;
+                  await TakePhotoAsync();
             }
         }
 
@@ -107,6 +68,43 @@ namespace UiSampleMigrat.Views.UpdateInfoUser
                     TooltipEffect.SetHasTooltip(item,true);
                 }
             }
+        }
+
+        async Task TakePhotoAsync()
+        {
+            try
+            {
+                var photo = await MediaPicker.CapturePhotoAsync();
+                await LoadPhotoAsync(photo);
+              
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Feature is now supported on the device
+            }
+            catch (PermissionException pEx)
+            {
+                // Permissions not granted
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"CapturePhotoAsync THREW: {ex.Message}");
+            }
+        }
+
+        async Task LoadPhotoAsync(FileResult photo)
+        {
+            // canceled
+            if (photo == null)
+            {
+                return;
+            }
+            await Task.Run(()=> {
+                UpdateProfileViewModel.GetInstance().Profile.ProfileImage = ImageSource.FromStream(() => {
+                    return photo.OpenReadAsync().Result;
+                });
+            });
+            imgProfile.Source = UpdateProfileViewModel.GetInstance().Profile.ProfileImage;
         }
 
     }

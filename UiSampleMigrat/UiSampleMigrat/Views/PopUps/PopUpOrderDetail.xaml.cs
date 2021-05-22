@@ -14,35 +14,9 @@ namespace UiSampleMigrat.Views.PopUps
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PopUpOrderDetail : Rg.Plugins.Popup.Pages.PopupPage 
     {
-        private ViewDetailViewModel context;
+       
 
-        public ViewDetailViewModel Context
-        {
-            get { return context; }
-            set { context= value;
-
-            }
-        }
-
-
-        public PopUpOrderDetail(ObservableCollection<Models.Item> productos,Orden orden)
-        {
-            InitializeComponent();
-
-            Context = new ViewDetailViewModel();
-            Context.Order = orden;
-
-            Context.Items = productos;
-
-            stackRes.BindingContext = Context;
-            lstRecipe.BindingContext = Context;
-        }
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
-
-        protected override void OnDisappearing()
+       protected override void OnDisappearing()
         {
             base.OnDisappearing();
         }

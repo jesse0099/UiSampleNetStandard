@@ -16,7 +16,6 @@ namespace UiSampleMigrat
     public partial class App : Application
     {
 
-        static TodoItemDatabase database;
 
         public App()
         {
@@ -34,27 +33,17 @@ namespace UiSampleMigrat
 
         }
 
-        public static TodoItemDatabase Database
-        {
-            get
-            {
-                if (database == null)
-                {
-                    database = new TodoItemDatabase();
-                }
-                return database;
-            }
-        }
 
         protected override void OnStart()
         {
             // Handle when your app starts
             //Testear el token para comprobar su validez
-            Settings.AppSettingsClear();
-            if (Settings.IsRemembered & !Settings.SerializedToken.Equals(string.Empty))
-                MainPage = new RootHomePage();
+            //Settings.AppSettingsClear();
             //var config = new Realms.RealmConfiguration("default.realm");
             //Realms.Realm.DeleteRealm(config);
+            if (Settings.IsRemembered & !Settings.SerializedToken.Equals(string.Empty))
+                MainPage = new RootHomePage();
+
         }
 
         protected override void OnSleep()

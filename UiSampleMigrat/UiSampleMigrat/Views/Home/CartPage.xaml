@@ -4,9 +4,6 @@
              xmlns:models="clr-namespace:UiSampleMigrat.Models"
              x:Class="UiSampleMigrat.Views.Home.CartPage">
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <models:CarritoPageViewModel x:Key="CarritoVM"></models:CarritoPageViewModel>
-        </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>

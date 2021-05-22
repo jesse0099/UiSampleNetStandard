@@ -31,19 +31,6 @@ namespace UiSampleMigrat.Models
 
         #endregion
 
-        #region Creacion y configuracion de la BD local
-        public const string DatabaseFileName = "CartSQLite.db3";
-
-        //Banderas de apertura de SQLITE
-        public const SQLite.SQLiteOpenFlags Flags =
-            //Abre la base de datos en modo Escritura/Lectura
-            SQLite.SQLiteOpenFlags.ReadWrite |
-            //Crea la base de datos si no existe
-            SQLite.SQLiteOpenFlags.Create |
-            //Admite acceso multi hilo a la base de datos
-            SQLite.SQLiteOpenFlags.SharedCache;
-
-        #endregion
 
     }
 }

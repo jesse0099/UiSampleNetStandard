@@ -1,13 +1,12 @@
-﻿using System;
-using UiSampleMigrat.Helpers;
+﻿using Realms;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UiSampleMigrat.Api_Models;
+using UiSampleMigrat.Helpers;
 using UiSampleMigrat.Interfaces;
 using UiSampleMigrat.Models;
 using UiSampleMigrat.MyExceptions;
-using System.Collections.Generic;
-using Realms;
-using Android.Widget;
 
 namespace UiSampleMigrat.Services
 {
@@ -53,6 +52,7 @@ namespace UiSampleMigrat.Services
 
                 ClientProfile returned = new ClientProfile()
                 {
+                    ID = result.ID,
                     PrimerNombre = result.PrimerNombre,
                     SegundoNombre = result.SegundoNombre,
                     Apellido = result.Apellido,
@@ -123,9 +123,10 @@ namespace UiSampleMigrat.Services
             catch (Exception ex)
             {
 
-                Commons.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
-                    ex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
-                return response;
+                /* Commons.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                     ex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+                 return response;*/
+                throw new ClientProfileException(ex.Message,ex);
             }
         }
 

@@ -99,9 +99,11 @@ namespace UiSampleMigrat.ViewModels
                 CProfileDao.Login = this.UserLoguin;
                 ClientProfile = await CProfileDao.Get(new ClientProfile());
 
-                
+
+                /*if (Settings.IsRemembered)
+                        CProfileDao.RealmSave(ClientProfile);*/
                 if (Settings.IsRemembered)
-                        CProfileDao.RealmSave(ClientProfile);
+                        await CProfileDao.RealmSave(ClientProfile);
 
                 Settings.FullName = $"{ClientProfile.PrimerNombre} {ClientProfile.SegundoNombre} {ClientProfile.Apellido} {ClientProfile.SegundoApellido}";
                 Settings.ClientUID = 1;

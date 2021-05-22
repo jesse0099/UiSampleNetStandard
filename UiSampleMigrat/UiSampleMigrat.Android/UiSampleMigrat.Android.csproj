@@ -65,9 +65,6 @@
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>1.2.0.223</Version>
     </PackageReference>
-    <PackageReference Include="sqlite-net-pcl">
-      <Version>1.7.335</Version>
-    </PackageReference>
     <PackageReference Include="SuaveControls.FloatingActionButton">
       <Version>2018.1.5</Version>
     </PackageReference>
@@ -82,9 +79,6 @@
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfRadialMenu">
       <Version>19.1.0.54</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugin.Media">
-      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
@@ -110,7 +104,6 @@
     <Compile Include="Effects\DroidTintEffect.cs" />
     <Compile Include="Effects\TooltipEffect.cs" />
     <Compile Include="Implementations\Localize.cs" />
-    <Compile Include="Implementations\SQLitePlatform.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Renderers\ImageEntryRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

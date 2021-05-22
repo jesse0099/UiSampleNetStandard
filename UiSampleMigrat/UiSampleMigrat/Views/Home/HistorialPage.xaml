@@ -7,6 +7,4 @@
              BarBackgroundColor="White"
              BarTextColor="Black"
              SelectedItem="1">
-    <homeviews:DetailPage   Title="Detalle"   Visual="Material"/>
-    <homeviews:ReviewPage   Title="Resumen"   Visual="Material"/>
 </TabbedPage>
