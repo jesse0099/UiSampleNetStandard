@@ -29,6 +29,9 @@ namespace UiSampleMigrat.Models
         public const string CLIENTUPDATEPROFILE = "/UpdateClientProfile";
         public const string CLIENTUPDATECREDENTIALS = "/UpdateClientCredentials";
 
+        public const string EXPLOREPREFIX = "api/Explore";
+        public const string CATEGORIES = "/Categories";
+
         #endregion
 
 

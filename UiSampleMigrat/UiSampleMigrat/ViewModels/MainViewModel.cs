@@ -21,11 +21,11 @@ namespace UiSampleMigrat.ViewModels
         public MainViewModel() {
 
             this.Login = new LoginViewModel();
-            this.Profile = new ProfileViewModel();
-            this.UpdateProfile = new UpdateProfileViewModel();
-            this.Inventario = new InventarioPageViewModel();
-            this.Enterprises = new EnterprisePageViewModel();
-            this.Test = new TestPageViewModel();
+            //this.Profile = new ProfileViewModel();
+            //this.UpdateProfile = new UpdateProfileViewModel();
+            //this.Inventario = new InventarioPageViewModel();
+            //this.Enterprises = new EnterprisePageViewModel();
+            //this.Test = new TestPageViewModel();
             this.RootExplorer = new RootExplorePageViewModel();
             
         }

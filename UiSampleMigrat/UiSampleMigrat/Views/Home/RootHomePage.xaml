@@ -6,11 +6,13 @@
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.IsSmoothScrollEnabled="True"
             android:TabbedPage.IsSwipePagingEnabled="True"
-            BarBackgroundColor="#0d0937"
+            BarBackgroundColor="{StaticResource LuckyPoint}"
             BarTextColor="White"
-            SelectedTabColor="#828282"
-            SelectedItem="3">
-    
+            SelectedTabColor="{StaticResource Liberty}"
+            SelectedItem="1">
+
+    <homeviews:SearchPage  Title="Explorar" IconImageSource="search96.png" Visual="Material"/>
+
 
 
 </TabbedPage>

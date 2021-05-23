@@ -73,13 +73,13 @@ namespace UiSampleMigrat.ViewModels
         #region Constructores
         public LoginViewModel()
         {
+            _instance = this;
             this.IsEnabled = true;
             this.IsBusy = false;
             this.Dao = new LoginDao();
             this.CProfileDao = new ClientProfileDao();
             this.UserLoguin = new Login();
             LoginCommand = new Command(LoginCommandExecute);
-            _instance = this;
         }
         #endregion
 

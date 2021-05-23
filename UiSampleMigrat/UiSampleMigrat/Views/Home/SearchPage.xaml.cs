@@ -13,11 +13,11 @@ namespace UiSampleMigrat.Views.Home
 		{
 			InitializeComponent ();
 
-            MessagingCenter.Subscribe<RootExplorePageViewModel>(this, "Goto", (a) => {
-                //Iniciar navegacion en el stack
-                if (lstCats.SelectedItem != null)
-                    gotoEnterprise(((Categoria)lstCats.SelectedItem).NombreCategoria);
-            });
+            //MessagingCenter.Subscribe<RootExplorePageViewModel>(this, "Goto", (a) => {
+            //    //Iniciar navegacion en el stack
+            //    if (lstCats.SelectedItem != null)
+            //        gotoEnterprise(((Categoria)lstCats.SelectedItem).NombreCategoria);
+            //});
 
         }
 

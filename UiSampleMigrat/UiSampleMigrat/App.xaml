@@ -20,6 +20,12 @@
             <Color x:Key="Liberty">#474787</Color>
             <Color x:Key="JacksonPurple">#40407a</Color>
             <Color x:Key="SynthPumpkin">#ff793f</Color>
+            <Color x:Key="FluoRed">#ff5252</Color>
+            <Color x:Key="EyeOfNewt">#b33939</Color>
+            <Color x:Key="SwanWhite">#f7f1e3</Color>
+            <Color x:Key="HotStone">#aaa69d</Color>
+            <Color x:Key="Cloud">#ecf0f1</Color>
+            <Color x:Key="MidNBlue">#2c3e50</Color>
             
             <!--  font families  -->
             <OnPlatform x:Key="RegularFontFamily" x:TypeArguments="x:String">
