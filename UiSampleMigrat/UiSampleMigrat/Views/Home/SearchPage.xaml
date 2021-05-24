@@ -25,7 +25,7 @@
 						        JustifyContent="Start"
 						        AlignContent="Start" 
 						        AlignItems="Start">
-
+                        
                     </FlexLayout>
                 </buttons:SfChipGroup.ChipLayout>
             </buttons:SfChipGroup>

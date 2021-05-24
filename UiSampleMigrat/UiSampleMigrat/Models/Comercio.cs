@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UiSampleMigrat.Api_Models
+namespace UiSampleMigrat.Models
 {
     public class Comercio
     {

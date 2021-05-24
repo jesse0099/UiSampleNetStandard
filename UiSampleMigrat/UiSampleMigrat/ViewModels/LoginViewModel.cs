@@ -10,37 +10,13 @@ using UiSampleMigrat.MyExceptions;
 
 namespace UiSampleMigrat.ViewModels
 {
-    public class LoginViewModel : NotificationObject
+    public class LoginViewModel : BaseViewModel
     {
 
         #region Propiedades
         public LoginDao Dao { get; set; }
 
         public ClientProfileDao CProfileDao { get; set; }
-
-        private bool _isBusy;
-
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            set
-            {
-                _isBusy = value;
-                onPropertyChanged();
-            }
-        }
-
-        private bool _isEnabled;
-
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                _isEnabled = value;
-                onPropertyChanged();
-            }
-        }
 
         public ClientProfile ClientProfile { get; set; }
 

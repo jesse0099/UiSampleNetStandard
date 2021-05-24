@@ -1,4 +1,7 @@
 ﻿using Android.Widget;
+using Android.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using UiSampleMigrat.Helpers;
@@ -11,7 +14,7 @@ namespace UiSampleMigrat.ViewModels
     public class RootExplorePageViewModel : BaseViewModel
     {
         #region Propiedades
-        private CategoriaDao CatDao;
+        private BaseDao Dao = null;
 
         private ObservableCollection<Categoria> categorias;
 
@@ -24,6 +27,16 @@ namespace UiSampleMigrat.ViewModels
             }
         }
 
+        private ObservableCollection<Comercio> comercios;
+
+        public ObservableCollection<Comercio> Comercios
+        {
+            get { return comercios; }
+            set { comercios = value;
+                onPropertyChanged();
+            }
+        }
+
         #endregion
 
 
@@ -31,7 +44,7 @@ namespace UiSampleMigrat.ViewModels
         public RootExplorePageViewModel()
         {
             _instance = this;
-            CatsAsyncLoad();
+             CatsAsyncLoad();
             
         }
         #region Metodos
@@ -39,20 +52,41 @@ namespace UiSampleMigrat.ViewModels
             IsBusy = true;
             try
             {
-                CatDao = new CategoriaDao();
-                Categorias = new ObservableCollection<Categoria>(await CatDao.GetList());
+                Dao = new CategoriaDao();
+                Categorias = new ObservableCollection<Categoria>(await ((CategoriaDao)Dao).GetList());
 
+                CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
             }
             catch (ConnectionException Cex) {
-                Commons.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                Commons.CustomizedToast(Color.White, Color.Black,
                      Cex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
             }
             catch (CategoryException Caex)
             {
-                Commons.CustomizedToast(Android.Graphics.Color.White, Android.Graphics.Color.Black,
+                Commons.CustomizedToast(Color.White,Color.Black,
                     Caex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
             }
             IsBusy = false;
+        }
+
+        private async Task CommeByCatsAsyncLoad(List<Categoria> cats) {               
+            try
+            {
+                Dao = new ComercioDao();
+                Comercios = new ObservableCollection<Comercio>(await ((ComercioDao)Dao).GetListByCats(cats));
+                Commons.CustomizedToast(Color.White, Color.Black,
+                     $"Comercios Cargados{Categorias.Count}", ToastLength.Long, iconResource: "error64", textSize: 16);
+            }
+            catch (ComerException cEx) {
+                Commons.CustomizedToast(Color.White,Color.Black,
+                    cEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+            }
+            catch (Exception pEx)
+            {
+                Commons.CustomizedToast(Color.White,Color.Black,
+                    pEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+                
+            }
         }
         #endregion
 

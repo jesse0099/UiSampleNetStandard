@@ -14,6 +14,7 @@ namespace UiSampleMigrat.Models
         public const string BASEURL = "http://192.168.100.207:45455/";
         public const string COMMEPREFIX = "/api/comme";
         public const string COMMEGETBYCAT = "/getByCat?category=";
+        public const string COMMEGETBYCATS = "/GetByCats?"; //vals -- Arreglo de Enteros
         public const string COMMEGETSUCBYCOMME = "/getSucByCommer?idCommer=";
 
         public const string PRODUCTSPREFIX = "/api/product";

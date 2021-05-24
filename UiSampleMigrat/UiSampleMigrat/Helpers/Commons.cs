@@ -1,6 +1,7 @@
 ﻿using Android.Graphics;
 using Android.Widget;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -9,6 +10,27 @@ namespace UiSampleMigrat.Helpers
 {
     public static class Commons
     {
+        public static string IdsWrapper(List<int> ids, string objectName) {
+            try
+            {
+                int i = 0;
+                foreach (var item in ids)
+                {
+                    if(i>0)
+                        objectName = $"{objectName}&{objectName}[{i}]={item}";
+                    else
+                        objectName = $"{objectName}[{i}]={item}";
+                    i++;
+                }
+
+                return objectName;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public static ImageSource ObjectToImageSource(object obj) {
             try
             {
