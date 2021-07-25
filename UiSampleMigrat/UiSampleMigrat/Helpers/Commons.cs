@@ -13,13 +13,14 @@ namespace UiSampleMigrat.Helpers
         public static string IdsWrapper(List<int> ids, string objectName) {
             try
             {
+                string tempObjName = objectName;
                 int i = 0;
                 foreach (var item in ids)
                 {
                     if(i>0)
-                        objectName = $"{objectName}&{objectName}[{i}]={item}";
+                        objectName = $"{objectName}&{tempObjName}={item}";
                     else
-                        objectName = $"{objectName}[{i}]={item}";
+                        objectName = $"{objectName}={item}";
                     i++;
                 }
 

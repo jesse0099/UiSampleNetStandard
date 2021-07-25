@@ -1,10 +1,7 @@
-﻿using Android.Widget;
-using Android.Graphics;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using UiSampleMigrat.Helpers;
+using System.Windows.Input;
 using UiSampleMigrat.Models;
 using UiSampleMigrat.MyExceptions;
 using UiSampleMigrat.Services;
@@ -21,7 +18,8 @@ namespace UiSampleMigrat.ViewModels
         public ObservableCollection<Categoria> Categorias
         {
             get { return categorias; }
-            set {
+            set
+            {
                 categorias = value;
                 onPropertyChanged();
             }
@@ -32,10 +30,14 @@ namespace UiSampleMigrat.ViewModels
         public ObservableCollection<Enterprise> Comercios
         {
             get { return comercios; }
-            set { comercios = value;
+            set
+            {
+                comercios = value;
                 onPropertyChanged();
             }
         }
+
+        public ICommand RefreshCommeCommand { get; set; }
 
         #endregion
 
@@ -44,12 +46,16 @@ namespace UiSampleMigrat.ViewModels
         public RootExplorePageViewModel()
         {
             _instance = this;
-             CatsAsyncLoad();
-            
+            RefreshCommeCommand = new Xamarin.Forms.Command(RefreshCommeExecute);
+            //Lanzamiento asincronico sin espera a retornos
+            CatsAsyncLoad();
+
         }
+
         #region Metodos
-        private async Task CatsAsyncLoad() {
-            IsBusy = true;
+        private async Task CatsAsyncLoad()
+        {
+
             try
             {
                 Dao = new CategoriaDao();
@@ -57,34 +63,51 @@ namespace UiSampleMigrat.ViewModels
 
                 await CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
             }
-            catch (ConnectionException Cex) {
-                Commons.CustomizedToast(Color.White, Color.Black,
-                     Cex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+            catch (ConnectionException Cex)
+            {
+                ErrorToasts(Cex.Message);
             }
             catch (CategoryException Caex)
             {
-                Commons.CustomizedToast(Color.White,Color.Black,
-                    Caex.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+                ErrorToasts(Caex.Message);
             }
-            IsBusy = false;
+            finally
+            {
+                InvokeOnMainThread(() => IsRefreshingView = false);
+            }
         }
 
-        private async Task CommeByCatsAsyncLoad(List<Categoria> cats) {
+        private async Task CommeByCatsAsyncLoad(List<Categoria> cats)
+        {
+
             try
             {
                 Dao = new EnterpriseDao();
                 Comercios = new ObservableCollection<Enterprise>(await ((EnterpriseDao)Dao).GetListByCats(cats));
             }
-            catch (ConnectionException coEx) {
-                Commons.CustomizedToast(Color.White, Color.Black,
-                    coEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+            catch (ConnectionException coEx)
+            {
+                ErrorToasts(coEx.Message);
             }
             catch (ComerException cEx)
             {
-                Commons.CustomizedToast(Color.White, Color.Black,
-                    cEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+                ErrorToasts(cEx.Message);
             }
-            
+            finally
+            {
+                InvokeOnMainThread(() => IsRefreshingView = false);
+            }
+        }
+
+        #endregion
+
+        #region Comandos
+        //Refrescar empresas - segun categorias seleccionadas
+        public void RefreshCommeExecute()
+        {
+            //InvokeOnMainThread(() => IsRefreshingView = true);
+            IsRefreshingView = true;
+            CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
         }
         #endregion
 

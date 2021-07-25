@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UiSampleMigrat.Models;
-using System.Collections.ObjectModel;
-using UiSampleMigrat.Services;
-using UiSampleMigrat.Api_Models;
-using Xamarin.Forms;
-using System.IO;
-using System.Windows.Input;
-using UiSampleMigrat.Views.PopUps;
-using Rg.Plugins.Popup.Animations;
+﻿using Rg.Plugins.Popup.Animations;
 using Rg.Plugins.Popup.Enums;
 using Rg.Plugins.Popup.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using UiSampleMigrat.Api_Models;
 using UiSampleMigrat.Helpers;
+using UiSampleMigrat.Models;
+using UiSampleMigrat.Services;
+using UiSampleMigrat.Views.PopUps;
+using Xamarin.Forms;
 
 namespace UiSampleMigrat.ViewModels
 {

@@ -51,7 +51,11 @@
         <!--Tarjetas con negocios-->
 
         <ListView ItemsSource="{Binding Comercios, Mode=OneWay}"
-                  HasUnevenRows="True">
+                  RefreshCommand="{Binding RefreshCommeCommand, Mode=OneWay}"
+                  IsRefreshing="{Binding IsRefreshingView, Mode=OneWay}"
+                  IsPullToRefreshEnabled="True"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -62,18 +66,19 @@
                                HeightRequest="190"
                                HasShadow="True">
                             <Grid>
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="10*" />
                                     <RowDefinition Height="80*" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
 
-                                <!--Imagen del negocio-->
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30*" />
                                     <ColumnDefinition Width="70*" />
                                 </Grid.ColumnDefinitions>
 
+                                <!--#region Imagen del negocio-->
                                 <Frame  Grid.Row="1"
                                         Grid.Column="0"
                                         Padding="0"
@@ -88,27 +93,29 @@
                                     <Image Source="{Binding Logo}"
                                            Aspect="AspectFill" />
                                 </Frame>
+                                <!--#endregion-->
 
-                                <!--Nombre y descripcion-->
+                                <!--#region Nombre y descripcion-->
                                 <StackLayout Orientation="Vertical"
                                              Grid.Row="1"
                                              Grid.Column="1"
                                              Margin="0,0,5,0">
 
                                     <Label Text="{Binding Nombre}"
-                                           TextColor="{StaticResource LuckyPoint}"
+                                           TextColor="{StaticResource MidNBlue}"
                                            FontSize="Large"
                                            FontAttributes="Bold" />
 
                                     <ccontrols:ExtendedLabel  Text="{Binding Descripcion}"
+                                                              TextColor="{StaticResource MidNBlue}"
                                                               FontSize="Body"
                                                               LineBreakMode="TailTruncation"
                                                               MaxLines="4"
-                                                              TextColor="Black"
                                                               JustifyText="True" />
                                 </StackLayout>
+                                <!--#endregion-->
 
-                                <!--Calificacion del negocio-->
+                                <!--#region Calificacion del negocio-->
                                 <StackLayout Grid.Row="2"
                                              Grid.Column="1"
                                              Margin="0,5,5,5"
@@ -121,9 +128,11 @@
 
                                     <badge:SfBadgeView BadgeText="{Binding Estrellas}"
                                                        VerticalOptions="Center"
-                                                       HorizontalOptions="End" />
+                                                       HorizontalOptions="End">
+                                    </badge:SfBadgeView>
                                 </StackLayout>
-
+                                <!--#endregion-->
+                                
                             </Grid>
                         </Frame>
                     </ViewCell>
@@ -132,5 +141,6 @@
         </ListView>
 
         <!--#endregion-->
+
     </StackLayout>
 </ContentPage>
