@@ -163,16 +163,16 @@
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
       <Version>19.1.0.54</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfBadgeView">
+      <Version>19.1.0.54</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator">
       <Version>19.1.0.54</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfListView">
+      <Version>19.1.0.54</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfNavigationDrawer">
-      <Version>19.1.0.54</Version>
-    </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfRadialMenu">
-      <Version>19.1.0.54</Version>
-    </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfTabView">
       <Version>19.1.0.54</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">

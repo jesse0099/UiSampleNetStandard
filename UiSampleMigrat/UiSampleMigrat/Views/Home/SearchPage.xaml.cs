@@ -21,9 +21,6 @@ namespace UiSampleMigrat.Views.Home
 
         }
 
-        private async void gotoEnterprise(string categoria)
-        {
-            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushModalAsync(new UiSampleMigrat.Views.Enterprises.EnterprisePage(categoria));
-        }
+
     }
 }

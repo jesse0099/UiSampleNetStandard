@@ -11,8 +11,5 @@ namespace UiSampleMigrat.Services
         {
             this.proc = new RestServiceConsumer();
         }
-        private bool CheckConnection() {
-            return proc.CheckConnection().IsSuccesFull;
-        }
     }
 }

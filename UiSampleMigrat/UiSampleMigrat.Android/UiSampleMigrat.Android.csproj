@@ -71,16 +71,16 @@
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
       <Version>19.1.0.54</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfBadgeView">
+      <Version>19.1.0.54</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator">
       <Version>19.1.0.54</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfListView">
+      <Version>19.1.0.54</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfNavigationDrawer">
-      <Version>19.1.0.54</Version>
-    </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfRadialMenu">
-      <Version>19.1.0.54</Version>
-    </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfTabView">
       <Version>19.1.0.54</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
@@ -108,6 +108,7 @@
     <Compile Include="Effects\TooltipEffect.cs" />
     <Compile Include="Implementations\Localize.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\ExtendedLabelRenderer.cs" />
     <Compile Include="Renderers\ImageEntryRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

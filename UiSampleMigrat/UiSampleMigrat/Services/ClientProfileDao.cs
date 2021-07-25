@@ -50,17 +50,7 @@ namespace UiSampleMigrat.Services
                     throw new ClientProfileException("Problemas Obteniendo la informacion.");
                 result = (ApiPlainClientProfile)response.Result;
 
-                ClientProfile returned = new ClientProfile()
-                {
-                    ID = result.ID,
-                    PrimerNombre = result.PrimerNombre,
-                    SegundoNombre = result.SegundoNombre,
-                    Apellido = result.Apellido,
-                    SegundoApellido = result.SegundoApellido,
-                    Email = result.Email,
-                    ProfileImage = Commons.ObjectToImageSource(result.PP),
-                    Afiliado = result.Afiliado
-                };
+                ClientProfile returned = new ClientProfile(result);
 
                 return returned;
             }

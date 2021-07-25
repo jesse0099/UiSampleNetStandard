@@ -27,9 +27,9 @@ namespace UiSampleMigrat.ViewModels
             }
         }
 
-        private ObservableCollection<Comercio> comercios;
+        private ObservableCollection<Enterprise> comercios;
 
-        public ObservableCollection<Comercio> Comercios
+        public ObservableCollection<Enterprise> Comercios
         {
             get { return comercios; }
             set { comercios = value;
@@ -55,7 +55,7 @@ namespace UiSampleMigrat.ViewModels
                 Dao = new CategoriaDao();
                 Categorias = new ObservableCollection<Categoria>(await ((CategoriaDao)Dao).GetList());
 
-                CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
+                await CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
             }
             catch (ConnectionException Cex) {
                 Commons.CustomizedToast(Color.White, Color.Black,
@@ -69,24 +69,22 @@ namespace UiSampleMigrat.ViewModels
             IsBusy = false;
         }
 
-        private async Task CommeByCatsAsyncLoad(List<Categoria> cats) {               
+        private async Task CommeByCatsAsyncLoad(List<Categoria> cats) {
             try
             {
-                Dao = new ComercioDao();
-                Comercios = new ObservableCollection<Comercio>(await ((ComercioDao)Dao).GetListByCats(cats));
-                Commons.CustomizedToast(Color.White, Color.Black,
-                     $"Comercios Cargados{Categorias.Count}", ToastLength.Long, iconResource: "error64", textSize: 16);
+                Dao = new EnterpriseDao();
+                Comercios = new ObservableCollection<Enterprise>(await ((EnterpriseDao)Dao).GetListByCats(cats));
             }
-            catch (ComerException cEx) {
-                Commons.CustomizedToast(Color.White,Color.Black,
+            catch (ConnectionException coEx) {
+                Commons.CustomizedToast(Color.White, Color.Black,
+                    coEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
+            }
+            catch (ComerException cEx)
+            {
+                Commons.CustomizedToast(Color.White, Color.Black,
                     cEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
             }
-            catch (Exception pEx)
-            {
-                Commons.CustomizedToast(Color.White,Color.Black,
-                    pEx.Message, ToastLength.Long, iconResource: "error64", textSize: 16);
-                
-            }
+            
         }
         #endregion
 

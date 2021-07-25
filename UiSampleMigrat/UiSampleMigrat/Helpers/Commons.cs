@@ -42,8 +42,13 @@ namespace UiSampleMigrat.Helpers
                     profileImage = ImageSource.FromFile("userF.png");
                 return profileImage;
             }
-            catch (Exception) {
-                throw;
+            catch (NullReferenceException nEx) {
+                //return ImageSource.FromFile("userF.png");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

@@ -2,33 +2,135 @@
 <ContentPage x:Class="UiSampleMigrat.Views.Home.SearchPage"
              xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sListView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:ccontrols="clr-namespace:UiSampleMigrat.Controls"
              BindingContext="{Binding  Main,Source={StaticResource Locator}}"
              BackgroundColor="White">
-    <ScrollView  VerticalOptions="FillAndExpand" >
-        <StackLayout HorizontalOptions="Fill" Orientation="Vertical" BindingContext="{Binding RootExplorer}">
-            <Frame CornerRadius="20" Margin="5,5,5,5" HeightRequest="25">
-                <SearchBar Placeholder="Restaurantes" >
+    <ContentPage.Resources>
 
-                </SearchBar>
-            </Frame>
-            <buttons:SfChipGroup ItemsSource="{Binding Categorias}"
-                                 DisplayMemberPath="Nombre"
-                                 ChipPadding="4,4,0,0"
-                                 Margin="5,5,5,0"
-                                 HorizontalOptions="FillAndExpand">
-                <buttons:SfChipGroup.ChipLayout>
-                    <FlexLayout HorizontalOptions="Start" 
-						        VerticalOptions="Center" 
-						        Direction="Row" 
-						        Wrap="Wrap"
-						        JustifyContent="Start"
-						        AlignContent="Start" 
-						        AlignItems="Start">
-                        
-                    </FlexLayout>
-                </buttons:SfChipGroup.ChipLayout>
-            </buttons:SfChipGroup>
-        </StackLayout>
-    </ScrollView>
+    </ContentPage.Resources>
+    <StackLayout  VerticalOptions="FillAndExpand"
+                  HorizontalOptions="EndAndExpand"
+                  Orientation="Vertical"
+                  BindingContext="{Binding RootExplorer}">
+
+        <!--#region Seccion de busqueda  -->
+        <Frame CornerRadius="20"
+               Margin="5,5,5,5"
+               HeightRequest="25">
+            <SearchBar Placeholder="Empresa"
+                       FontSize="Medium" />
+
+
+        </Frame>
+        <!--Chips con categorias-->
+
+        <buttons:SfChipGroup ItemsSource="{Binding Categorias}"
+                             DisplayMemberPath="Nombre"
+                             ChipPadding="4,4,0,0"
+                             Margin="5,5,5,0"
+                             HorizontalOptions="FillAndExpand">
+            <buttons:SfChipGroup.ChipLayout>
+                <FlexLayout     HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                Direction="Row"
+                                Wrap="Wrap"
+                                JustifyContent="Start"
+                                AlignContent="Start"
+                                AlignItems="Start">
+
+                </FlexLayout>
+            </buttons:SfChipGroup.ChipLayout>
+        </buttons:SfChipGroup>
+        <!--#endregion-->
+
+        <!--#region Vista principal -->
+
+        <!--Tarjetas con negocios-->
+
+        <ListView ItemsSource="{Binding Comercios, Mode=OneWay}"
+                  HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame CornerRadius="5"
+                               Margin="5,4,5,4"
+                               Padding="2,1,2,1"
+                               WidthRequest="190"
+                               HeightRequest="190"
+                               HasShadow="True">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10*" />
+                                    <RowDefinition Height="80*" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <!--Imagen del negocio-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30*" />
+                                    <ColumnDefinition Width="70*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Frame  Grid.Row="1"
+                                        Grid.Column="0"
+                                        Padding="0"
+                                        Margin="5,0,5,0"
+                                        WidthRequest="110"
+                                        HeightRequest="110"
+                                        CornerRadius="55"
+                                        IsClippedToBounds="True"
+                                        HasShadow="True"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+                                    <Image Source="{Binding Logo}"
+                                           Aspect="AspectFill" />
+                                </Frame>
+
+                                <!--Nombre y descripcion-->
+                                <StackLayout Orientation="Vertical"
+                                             Grid.Row="1"
+                                             Grid.Column="1"
+                                             Margin="0,0,5,0">
+
+                                    <Label Text="{Binding Nombre}"
+                                           TextColor="{StaticResource LuckyPoint}"
+                                           FontSize="Large"
+                                           FontAttributes="Bold" />
+
+                                    <ccontrols:ExtendedLabel  Text="{Binding Descripcion}"
+                                                              FontSize="Body"
+                                                              LineBreakMode="TailTruncation"
+                                                              MaxLines="4"
+                                                              TextColor="Black"
+                                                              JustifyText="True" />
+                                </StackLayout>
+
+                                <!--Calificacion del negocio-->
+                                <StackLayout Grid.Row="2"
+                                             Grid.Column="1"
+                                             Margin="0,5,5,5"
+                                             Orientation="Horizontal"
+                                             HorizontalOptions="End">
+
+                                    <Label  Text="Calificación: "
+                                            FontSize="Medium"
+                                            HorizontalOptions="Start" />
+
+                                    <badge:SfBadgeView BadgeText="{Binding Estrellas}"
+                                                       VerticalOptions="Center"
+                                                       HorizontalOptions="End" />
+                                </StackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--#endregion-->
+    </StackLayout>
 </ContentPage>

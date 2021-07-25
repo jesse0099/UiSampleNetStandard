@@ -11,7 +11,6 @@ namespace UiSampleMigrat.ViewModels
     {
         public InventarioPageViewModel Inventario { get; set; }
         public RootExplorePageViewModel RootExplorer { get; set; }
-        public EnterprisePageViewModel  Enterprises { get; set; }
         public LoginViewModel Login { get; set; }
         public RootExplorePageViewModel rootViewModel { get; set; }
         public UpdateProfileViewModel UpdateProfile { get; set; }
@@ -24,7 +23,6 @@ namespace UiSampleMigrat.ViewModels
             //this.Profile = new ProfileViewModel();
             //this.UpdateProfile = new UpdateProfileViewModel();
             //this.Inventario = new InventarioPageViewModel();
-            //this.Enterprises = new EnterprisePageViewModel();
             //this.Test = new TestPageViewModel();
             this.RootExplorer = new RootExplorePageViewModel();
             

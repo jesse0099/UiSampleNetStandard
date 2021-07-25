@@ -9,24 +9,25 @@ using UiSampleMigrat.MyExceptions;
 
 namespace UiSampleMigrat.Services
 {
-    public class ComercioDao : BaseDao, IDao<Comercio>
+    public class EnterpriseDao : BaseDao, IDao<Enterprise>
     {
-        public Task<Response> Delete(Comercio obj)
+        public Task<Response> Delete(Enterprise obj)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Comercio> Get(Comercio obj)
+        public Task<Enterprise> Get(Enterprise obj)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<List<Comercio>> GetList()
+        public Task<List<Enterprise>> GetList()
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<Comercio>> GetListByCats(List<Categoria> cats) {
+        //Lista de comercios dada una lista de categorias
+        public async Task<List<Enterprise>> GetListByCats(List<Categoria> cats) {
             if (!proc.CheckConnection().IsSuccesFull)
                 throw new ConnectionException();
             try
@@ -34,11 +35,18 @@ namespace UiSampleMigrat.Services
                 if (cats.Count < 1)
                     throw new ComerException("Ninguna Categoria Seleccionada");
 
-                var ids = cats.ConvertAll<int>((delegate (Categoria cat) { return cat.Id; } ));
+                var ids = cats.ConvertAll((delegate (Categoria cat) { return cat.Id; } ));
 
                 var objName = "vals";
-                var response  = await proc.Get<List<Comercio>>(Constantes.BASEURL, Constantes.COMMEPREFIX, $"{Constantes.COMMEGETBYCATS}{Commons.IdsWrapper(ids,objName)}");
-                var returned = (List<Comercio>)response.Result;
+                var response  = await proc.Get<List<ApiEnterprise>>(Constantes.BASEURL, Constantes.COMMEPREFIX, $"{Constantes.COMMEGETBYCATS}{Commons.IdsWrapper(ids,objName)}");
+
+                if (!response.IsSuccesFull)
+                    throw new ComerException(response.Message);
+
+                var returned = ((List<ApiEnterprise>)response.Result).ConvertAll(delegate (ApiEnterprise result) {
+                    return new Enterprise(result);
+                });
+
                 return returned;
             }
             catch (Exception ex)
@@ -48,12 +56,12 @@ namespace UiSampleMigrat.Services
             }
         }
 
-        public Task<Response> Post(Comercio obj)
+        public Task<Response> Post(Enterprise obj)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Response> Put(Comercio obj)
+        public Task<Response> Put(Enterprise obj)
         {
             throw new System.NotImplementedException();
         }

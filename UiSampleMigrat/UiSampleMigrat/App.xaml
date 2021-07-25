@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" 
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:infra="clr-namespace:UiSampleMigrat.Infraestructure"
-             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:infra="clr-namespace:UiSampleMigrat.Infraestructure"
              x:Class="UiSampleMigrat.App">
     <Application.Resources>
         <!--  Application resource dictionary  -->
@@ -113,6 +114,37 @@
                 <Setter Property="FontFamily" Value="{StaticResource MediumFontFamily}" />
                 <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
             </Style>
+            
+            
+            <DataTemplate x:Key="EnterpriseCard">
+                <ViewCell>
+                    <Frame CornerRadius="5"
+                               Padding="5"
+                               WidthRequest="200"
+                               HeightRequest="200"
+                               Margin="8"
+                               HasShadow="True">
+                        <StackLayout>
+                            <Label Text="{Binding Nombre}"
+                                           TextColor="{StaticResource LuckyPoint}" 
+                                           FontAttributes="Bold"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Frame WidthRequest="100"
+                                               HeightRequest="100"
+                                               CornerRadius="50">
+                                    <Image Source="{Binding Logo}" 
+                                               WidthRequest="90"
+                                               HeightRequest="90"/>
+                                </Frame>
+                                <Label Text="{Binding Descripcion}"
+                                               TextColor="{StaticResource MidNBlue}"/>
+                            </StackLayout>
+                            <badge:SfBadgeView BadgeText="{Binding Estrellas}"
+                                                       HorizontalOptions="End"/>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
