@@ -5,6 +5,7 @@
              xmlns:sListView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
              xmlns:ccontrols="clr-namespace:UiSampleMigrat.Controls"
              BindingContext="{Binding  Main,Source={StaticResource Locator}}"
              BackgroundColor="White">
@@ -26,24 +27,23 @@
 
         </Frame>
         <!--Chips con categorias-->
-
         <buttons:SfChipGroup ItemsSource="{Binding Categorias}"
                              DisplayMemberPath="Nombre"
                              ChipPadding="4,4,0,0"
                              Margin="5,5,5,0"
                              HorizontalOptions="FillAndExpand">
             <buttons:SfChipGroup.ChipLayout>
-                <FlexLayout     HorizontalOptions="Start"
-                                VerticalOptions="Center"
-                                Direction="Row"
-                                Wrap="Wrap"
-                                JustifyContent="Start"
-                                AlignContent="Start"
-                                AlignItems="Start">
-
+                <FlexLayout VerticalOptions="Center"
+                            Direction="Row"
+                            Wrap="Wrap"
+                            JustifyContent="Start"
+                            AlignContent="Start"
+                            AlignItems="Start">
                 </FlexLayout>
             </buttons:SfChipGroup.ChipLayout>
         </buttons:SfChipGroup>
+        <buttons:SfButton Text="Reset"
+                          FontSize="Body" />
         <!--#endregion-->
 
         <!--#region Vista principal -->
@@ -132,7 +132,7 @@
                                     </badge:SfBadgeView>
                                 </StackLayout>
                                 <!--#endregion-->
-                                
+
                             </Grid>
                         </Frame>
                     </ViewCell>

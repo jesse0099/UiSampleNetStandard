@@ -47,8 +47,8 @@ namespace UiSampleMigrat.ViewModels
         {
             _instance = this;
             Categorias = new ObservableCollection<Categoria>();
-            RefreshCommeCommand = new Xamarin.Forms.Command(RefreshCommeExecute);
-            CatsAndCommeAsync();
+            RefreshCommeCommand = new Xamarin.Forms.Command(async ()=> await RefreshCommeExecute());
+            var initTask = CatsAndCommeAsync();
         }
 
         #region Metodos
@@ -91,19 +91,18 @@ namespace UiSampleMigrat.ViewModels
             return new List<Enterprise>(Comercios);
         }
 
-        private async void CatsAndCommeAsync()
+        private async Task CatsAndCommeAsync()
         {
             var catsTask = CatsAsyncLoad();
             var commeByCatsTask = CommeByCatsAsyncLoad(await catsTask);
             await commeByCatsTask;
-            IsRefreshingView = false;
         }
 
         #endregion
 
         #region Comandos
         //Refrescar empresas - segun categorias seleccionadas
-        public async void RefreshCommeExecute()
+        public async Task RefreshCommeExecute()
         {
             await CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
             IsRefreshingView = false;

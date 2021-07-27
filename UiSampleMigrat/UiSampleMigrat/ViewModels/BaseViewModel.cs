@@ -10,7 +10,7 @@ namespace UiSampleMigrat.ViewModels
     {
         protected bool _isEnabled;
 
-        protected bool IsEnabled
+        public bool IsEnabled
         {
             get { return _isEnabled; }
             set
@@ -22,7 +22,7 @@ namespace UiSampleMigrat.ViewModels
 
         protected bool _isBusy;
 
-        protected bool IsBusy
+        public bool IsBusy
         {
             get { return _isBusy; }
             set
@@ -34,7 +34,7 @@ namespace UiSampleMigrat.ViewModels
 
         protected bool _isRefreshingView;
 
-        protected bool IsRefreshingView
+        public bool IsRefreshingView
         {
             get { return _isRefreshingView; }
             set
