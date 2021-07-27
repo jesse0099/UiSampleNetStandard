@@ -46,22 +46,19 @@ namespace UiSampleMigrat.ViewModels
         public RootExplorePageViewModel()
         {
             _instance = this;
+            Categorias = new ObservableCollection<Categoria>();
             RefreshCommeCommand = new Xamarin.Forms.Command(RefreshCommeExecute);
-            //Lanzamiento asincronico sin espera a retornos
-            CatsAsyncLoad();
-
+            CatsAndCommeAsync();
         }
 
         #region Metodos
-        private async Task CatsAsyncLoad()
+        private async Task<List<Categoria>> CatsAsyncLoad()
         {
 
             try
             {
                 Dao = new CategoriaDao();
                 Categorias = new ObservableCollection<Categoria>(await ((CategoriaDao)Dao).GetList());
-
-                await CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
             }
             catch (ConnectionException Cex)
             {
@@ -71,13 +68,11 @@ namespace UiSampleMigrat.ViewModels
             {
                 ErrorToasts(Caex.Message);
             }
-            finally
-            {
-                InvokeOnMainThread(() => IsRefreshingView = false);
-            }
+
+            return new List<Categoria>(Categorias);
         }
 
-        private async Task CommeByCatsAsyncLoad(List<Categoria> cats)
+        private async Task<List<Enterprise>> CommeByCatsAsyncLoad(List<Categoria> cats)
         {
 
             try
@@ -93,21 +88,25 @@ namespace UiSampleMigrat.ViewModels
             {
                 ErrorToasts(cEx.Message);
             }
-            finally
-            {
-                InvokeOnMainThread(() => IsRefreshingView = false);
-            }
+            return new List<Enterprise>(Comercios);
+        }
+
+        private async void CatsAndCommeAsync()
+        {
+            var catsTask = CatsAsyncLoad();
+            var commeByCatsTask = CommeByCatsAsyncLoad(await catsTask);
+            await commeByCatsTask;
+            IsRefreshingView = false;
         }
 
         #endregion
 
         #region Comandos
         //Refrescar empresas - segun categorias seleccionadas
-        public void RefreshCommeExecute()
+        public async void RefreshCommeExecute()
         {
-            //InvokeOnMainThread(() => IsRefreshingView = true);
-            IsRefreshingView = true;
-            CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
+            await CommeByCatsAsyncLoad(new List<Categoria>(Categorias));
+            IsRefreshingView = false;
         }
         #endregion
 
