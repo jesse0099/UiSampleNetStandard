@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiSampleMigrat.Android", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiSampleMigrat.iOS", "UiSampleMigrat\UiSampleMigrat.iOS\UiSampleMigrat.iOS.csproj", "{2E3D2A72-0B30-483B-A1A2-4077B62BB6DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiSampleMigrat", "UiSampleMigrat\UiSampleMigrat\UiSampleMigrat.csproj", "{8429C112-EB09-4FE7-BC84-6FAD1A2418B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UiSampleMigrat", "UiSampleMigrat\UiSampleMigrat\UiSampleMigrat.csproj", "{8429C112-EB09-4FE7-BC84-6FAD1A2418B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

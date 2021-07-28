@@ -13,7 +13,7 @@
 
     </ContentPage.Resources>
     <StackLayout  VerticalOptions="FillAndExpand"
-                  HorizontalOptions="EndAndExpand"
+                  HorizontalOptions="FillAndExpand"
                   Orientation="Vertical"
                   BindingContext="{Binding RootExplorer}">
 
@@ -27,23 +27,35 @@
 
         </Frame>
         <!--Chips con categorias-->
-        <buttons:SfChipGroup ItemsSource="{Binding Categorias}"
-                             DisplayMemberPath="Nombre"
-                             ChipPadding="4,4,0,0"
-                             Margin="5,5,5,0"
-                             HorizontalOptions="FillAndExpand">
-            <buttons:SfChipGroup.ChipLayout>
-                <FlexLayout VerticalOptions="Center"
-                            Direction="Row"
-                            Wrap="Wrap"
-                            JustifyContent="Start"
-                            AlignContent="Start"
-                            AlignItems="Start">
-                </FlexLayout>
-            </buttons:SfChipGroup.ChipLayout>
-        </buttons:SfChipGroup>
-        <buttons:SfButton Text="Reset"
-                          FontSize="Body" />
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     Orientation="Horizontal"
+                     HeightRequest="120">
+            <ScrollView HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        Orientation="Both">
+                <buttons:SfChipGroup ItemsSource="{Binding Categorias}"
+                                     DisplayMemberPath="Nombre"
+                                     HorizontalOptions="FillAndExpand"
+                                     ChipPadding="4,4,0,0"
+                                     Margin="5,5,5,0">
+                    <buttons:SfChipGroup.ChipLayout>
+                        <FlexLayout Direction="Row"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center"
+                                    Wrap="Wrap"
+                                    JustifyContent="Start"
+                                    AlignContent="Start"
+                                    AlignItems="Start" />
+                    </buttons:SfChipGroup.ChipLayout>
+                </buttons:SfChipGroup>
+            </ScrollView>
+            <buttons:SfButton Text="Reset"
+                              FontSize="Body"
+                              VerticalOptions="Center"
+                              HorizontalOptions="End" />
+        </StackLayout>
+
+
         <!--#endregion-->
 
         <!--#region Vista principal -->
